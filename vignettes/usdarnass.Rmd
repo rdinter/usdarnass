@@ -1,0 +1,175 @@
+---
+title: "Getting started with usdarnass"
+author: "Robert Dinterman"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with usdarnass}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library("knitr")
+opts_chunk$set(
+  collapse = TRUE,
+  eval = !(Sys.getenv("NASS_KEY") == ""),
+  comment = "#>"
+)
+```
+
+# Introduction
+
+`usdarnass` provides an alternative for downloading various USDA data from [https://quickstats.nass.usda.gov/](https://quickstats.nass.usda.gov/) through R. You must sign up for an [API key](https://quickstats.nass.usda.gov/api) from the mentioned website in order for this package to work.
+
+The USDA's documentation on Quick Stats can be found throughout [https://www.nass.usda.gov/Quick_Stats/index.php](https://www.nass.usda.gov/Quick_Stats/index.php). A short description of what the data entail can be summarised from the Quick Stats description on [data.gov](https://catalog.data.gov/dataset/quick-stats-agricultural-database):
+
+> Quick Stats is the National Agricultural Statistics Service's (NASS) online, self-service tool to access complete results from the 1997, 2002, 2007, and 2012 Censuses of Agriculture as well as the best source of NASS survey published estimates. The census collects data on all commodities produced on U.S. farms and ranches, as well as detailed information on expenses, income, and operator characteristics. The surveys that NASS conducts collect information on virtually every facet of U.S. agricultural production.
+
+There are two main USDA sources within Quick Stats: censuses and surveys. The census values in Quick Stats start in 1997 while the survey values can range all the way back to 1850 and then annually since 1866. Although Agricultural Censuses occur once every 5 years (1997, 2002, 2007, 2012, and eventually 2017), USDA will administer other censuses which explains the extra years available. At this time, there is no support for documenting the various kinds of data which can be extracted from Quick Stats and this package only serves as an R interface for downloading Quick Stats data and it is up to the user to understand the source of the data they download.
+
+<!-- The core functions are -->
+
+<!-- - `nass_set_key()` - set the required USDA Quickstats API key for the session. -->
+<!-- - `nass_param()` - extract all of the valid values for a particular parameter. -->
+<!-- - `nass_count()` - number of observations in a particular query, helpful in determining if a query fits within the 50,000 limit. -->
+<!-- - `nass_data()` - return a data.frame with the observations that fit within a query, however any query that returns more than 50,000 observations returns an error and it will need to be subset. -->
+
+# Package Install
+
+Development version (needs devtools installed):
+
+```{r installation_github, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("rdinter/usdarnass")
+```
+
+Load package:
+
+```{r load}
+library("usdarnass")
+```
+
+# Usage
+
+If a query works on the [https://quickstats.nass.usda.gov/](https://quickstats.nass.usda.gov/) interface, then it will work with the `usdarnass` package. Keep in mind that there is a 50,000 observation limit for both the web interface and data queries with this package.
+
+There are three main functions for this package with the first as the workhorse:
+
+1. `nass_data()` this will return a data.frame to the specifications of the query from all of the arguments set in the function call. This mimics the simple "GET DATA" command off of [https://quickstats.nass.usda.gov/](https://quickstats.nass.usda.gov/) and requires an API key. There is a 50,000 limit for each call.
+2. `nass_param()` returns all of the possible values for a parameter in a query. Helpful to understand how to subset a query if it runs into the 50,000 limit.
+3. `nass_count()` returns the number of records for a query. Very useful in conjunction with `nass_param()` to determine what queries can return data with a `nass_data()` call.
+
+All of these functions require an API Key for each query, which can be set with another function.
+
+## Key Install
+
+```{r key-install, eval = FALSE}
+set_nass_key("YOUR_KEY_IN_QUOTATIONS")
+# First time, reload your enviornment so you can use the key without restarting R.
+readRenviron("~/.Renviron")
+# You can check it with:
+Sys.getenv("NASS_KEY")
+```
+
+The above script will add a line to your `.Renviron` file to be re-used whenever you are using the package. If you are not comfortable with that, you can add the following line to your `.Renviron` file manually to produce the same result.
+
+`NASS_KEY = 'YOUR_KEY_IN_SINGLE_QUOTES'`
+
+If you are not comfortable with either of these options, then to use the package you need to ensure that the `token` parameter is set to your API key in each of your function calls that queries USDA Quickstats.
+
+# Get Data
+
+As previously stated, the workhorse function is the `nass_data()` function which will make query calls and return a data.frame as long as the query will return 50,000 or fewer observations. By way of example, we can put in a query to Quick Stats for the value of agricultural land (and buildings) in Wake County North Carolina for 2012:
+
+```{r get_data}
+j5 <- nass_data(year = 2012,
+                short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $",
+                county_name = "WAKE",
+                state_name = "NORTH CAROLINA")
+str(j5)
+```
+
+The output of this query has a lot to digest, but the main focus is on the `Value` variable in the resulting data.frame. Please note that the returned `Value` for the query is of the class `r class(j5$Value)`. The parameter `numeric_vals` can be set to `TRUE` to have this return a numeric value, however the default is to be a character type as there are some suppressed values which will be coerced to `NA` when `numeric_vals` is set to `TRUE`.
+
+Aside from the output, the particular query used four parameters for its output: `year`, `short_desc`, `county_name`, and `state_name`. Each of these parameters have a particular set of values which can generate of query, which can be figured out using the `nass_param()` function. In querying the Quick Stats API, you usually do not need to subset many parameters to get to the 50,000 limitation but if you do not get within the 50,000 limitation the call will produce an error.
+
+There are 18 parameters for each query, although most of those will be `NULL` values and not required to specify an output.
+
+## Parameters
+
+There are 18 parameters which can be included in each query to Quick Stats however some of them are concatenations of other parameter values. If there is a name in quotations following a particular parameter, then that is the drop down menu via the [Quick Stats web interface](https://www.nass.usda.gov/Quick_Stats/index.php) that gives you a value. Not all parameters will have a drop down menu though:
+
+1. `source_desc` "Program" - Source of data ("CENSUS" or "SURVEY"). Census program includes the Census of Ag as well as follow up projects. Survey program includes national, state, and county surveys.
+2. `sector_desc` "Sector" - Five high level, broad categories useful to narrow down choices. ("ANIMALS & PRODUCTS", "CROPS", "DEMOGRAPHICS", "ECONOMICS", or "ENVIRONMENTAL")
+3. `group_desc` "Group" - Subsets within sector (e.g., under sector_desc = "CROPS", the groups are "FIELD CROPS", "FRUIT & TREE NUTS", "HORTICULTURE", and "VEGETABLES").
+4. `commodity_desc` "Commodity" - The primary subject of interest (e.g., "CORN", "CATTLE", "LABOR", "TRACTORS", "OPERATORS").
+5. `short_desc` "Data Item" - A concatenation of six columns: commodity_desc, class_desc, prodn_practice_desc, util_practice_desc, statisticcat_desc, and unit_desc.
+6. `domain_desc` "Domain" - Generally another characteristic of operations that produce a particular commodity (e.g., "ECONOMIC CLASS", "AREA OPERATED", "NAICS CLASSIFICATION", "SALES"). For chemical usage data, the domain describes the type of chemical applied to the commodity. The domain_desc = "TOTAL" will have no further breakouts; i.e., the data value pertains completely to the short_desc.
+7. `domaincat_desc` "Domain Category" - Categories or partitions within a domain (e.g., under domain_desc = "SALES", domain categories include \$1,000 TO \$9,999, \$10,000 TO \$19,999, etc).
+8. `agg_level_desc` "Geographic Level" - Aggregation level or geographic granularity of the data. ("AGRICULTURAL DISTRICT", "COUNTY", "INTERNATIONAL", "NATIONAL", "REGION : MULTI-STATE", "REGION : SUB-STATE", "STATE", "WATERSHED", or "ZIP CODE")
+9. `statisticcat_desc` "Category" - The aspect of a commodity being measured (e.g., "AREA HARVESTED", "PRICE RECEIVED", "INVENTORY", "SALES").
+10. `state_name` "State" - State full name.
+11. `asd_desc` "Ag District" - Ag statistics district name.
+12. `county_name` "County" - County name.
+13. `region_desc` "Region" - NASS defined geographic entities not readily defined by other standard geographic levels. A region can be a less than a state (SUB-STATE) or a group of states (MULTI-STATE), and may be specific to a commodity.
+14. `zip_5` "Zip Code" - US Postal Service 5-digit zip code.
+15. `watershed_desc` "Watershed" - Name assigned to the HUC.
+16. `year` "Year" - The numeric year of the data and can be either a character or numeric vector. Conditional values are also possible, for example a character vector of ">=1999" of "1999<=" will give years greater than or equal to 1999. Right now the logical values can either be greater/less than or equal to with the logical at either the beginning or end of a string with the year.
+17. `freq_desc` "Period Type" - Length of time covered ("ANNUAL", "SEASON", "MONTHLY", "WEEKLY", "POINT IN TIME"). "MONTHLY" often covers more than one month. "POINT IN TIME" is as of a particular day.
+18. `reference_period_desc` "Period" - The specific time frame, within a freq_desc.
+
+The descriptions of parameters here are mostly thought of as minimal because much of the actual parameters have many values. This is where the `nass_param()` function comes into play in order to give the full set of values for each parameter.
+
+# Get Parameter
+
+The `nass_param()` function will return a vector of all the possible values for a parameter conditional on the other parameter subsets given above. By way of example, we can see that there are only two sources of datasets for the Quick Stats queries by asking what the values for the `source_desc` parameter are:
+
+```{r source}
+nass_param("source_desc")
+```
+
+The first argument in `nass_param()` is the parameter of interest, which can take on any of the 18 values from the parameters section. This argument must be passed in a character format, so make sure to use quotations in your calls.
+
+This function is most helpful in determining what variables are available in for a certain subset. For example, if I were interested in what county level variables in Ohio are available in 2000 I might start by determining what "Group" is available at that level:
+
+```{r ohio_group}
+nass_param("group_desc", state_name = "OHIO", year = 2000)
+```
+
+I should mention that the `year` parameter is the only parameter that does not need to be a character vector but can be numeric. Now, if I want to further figure out what commodities are available for the "DAIRY" subset of this data, I would make a call of :
+
+```{r ohio_commodity}
+nass_param("commodity_desc", group_desc = "dairy", state_name = "OHIO", year = 2000)
+```
+
+One point of emphasis with the above code is that the character vectors are not case sensitive for the parameters and 
+
+
+## Sample Code
+
+### Example 1
+
+Find the number of observations for county level variables in Wake County North Carolina.
+
+```{r ex1_count}
+nass_count(state_name = "NORTH CAROLINA", county_name = "WAKE")
+```
+
+
+### Example 2
+
+View all of the parameter values for the group_desc category when the sector is CROPS.
+
+```{r ex2_param}
+nass_param("group_desc", sector_desc = "CROPS")
+```
+
+
+### Example 3
+
+Download the data pertaining to Wake County in 2012 for its value of agricultural land. Then look at the structure of the object returned by the function call.
+
+
+
+

@@ -1,0 +1,49 @@
+
+usdarnass
+=========
+
+[![Travis-CI Build Status](https://travis-ci.org/rdinter/usdarnass.svg?branch=master)](https://travis-ci.org/rdinter/usdarnass)
+
+An alternative for downloading various USDA data from <https://quickstats.nass.usda.gov/> through R. You must sign up for an [API key](https://quickstats.nass.usda.gov/api) from the mentioned website in order for this package to work. Disclaimer:
+
+> This product uses the NASS API but is not endorsed or certified by NASS.
+
+Install
+=======
+
+Eventually, this package will be uploaded to [CRAN](https://cran.r-project.org/). At which point, you should be able to install the package through the typical method:
+
+``` r
+install.packages("usdarnass")
+```
+
+However, until the package has been submitted to CRAN the only way to use the package is through the development version (needs devtools installed):
+
+``` r
+# install.packages("devtools")
+devtools::install_github("rdinter/usdarnass")
+```
+
+Once installed through either method, you can load package the conventional way:
+
+``` r
+library("usdarnass")
+```
+
+Usage
+=====
+
+See the [Get started](articles/usdarnass.html) article for a more in depth discussion of the package features.
+
+Documentation
+=============
+
+See the [documentation site](http://rdinter.github.io/usdarnass/).
+
+See Also
+========
+
+There are other `R` packages that work with USDA Quickstats that may be more useful to others:
+
+-   [emraher/rnass](https://github.com/emraher/rnass)
+-   [potterzot/rnassqs](https://github.com/potterzot/rnassqs)

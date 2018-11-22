@@ -1,0 +1,71 @@
+#' @title Install a NASS Quickstats API Key in Your \code{.Renviron} File for
+#'   Repeated Use
+#' @description This function will add your NASS Quickstats API key to your
+#'   \code{.Renviron} file so it can be called securely without being stored in
+#'   your code. After you have installed your key, it can be called any time by
+#'   typing \code{Sys.getenv("NASS_KEY")} and can be used in package functions
+#'   by simply typing NASS_KEY. If you do not have an \code{.Renviron} file, the
+#'   function will create on for you. If you already have an \code{.Renviron}
+#'   file, the function will append the key to your existing file, while making
+#'   a backup of your original file for disaster recovery purposes.
+#' @param token The API key provided to you from NASS formated in quotes. A key
+#'   can be acquired at \url{https://quickstats.nass.usda.gov/api}
+#' @param overwrite If this is set to TRUE, it will overwrite an existing
+#'   NASS_KEY that you already have in your \code{.Renviron} file.
+#' @export nass_set_key
+#' @examples
+#'
+#' \donttest{
+#' set_nass_key("111111abc")
+#' # First time, relead your enviornment so you can use the key without
+#' # restarting R.
+#' readRenviron("~/.Renviron")
+#' # You can check it with:
+#' Sys.getenv("NASS_KEY")
+#' }
+#'
+#' \donttest{
+#' # If you need to overwrite an existing key:
+#' nass_set_key("111111abc", overwrite = TRUE)
+#' # First time, relead your enviornment so you can use the key without
+#' # restarting R.
+#' readRenviron("~/.Renviron")
+#' # You can check it with:
+#' Sys.getenv("NASS_KEY")
+#' }
+
+nass_set_key <- function(token = NA, overwrite = NA){
+  # go to the home dir. and look for an .Renviron file. If not, create one.
+  setwd(Sys.getenv("HOME"))
+  if(file.exists(".Renviron")){
+    # Backup original .Renviron before doing anything else here.
+    file.copy(".Renviron", ".Renviron_backup")
+  }
+  if(!file.exists(".Renviron")){
+    file.create(".Renviron")
+  }
+  else{
+    if(isTRUE(overwrite)){
+      message("Your original .Renviron will be backed up and stored in your ",
+              "R HOME directory if needed.")
+      oldenv <- utils::read.table(".Renviron", stringsAsFactors = FALSE)
+      newenv <- oldenv[-grep("NASS_KEY", oldenv),]
+      utils::write.table(newenv, ".Renviron", quote = FALSE, sep = "\n",
+                         col.names = FALSE, row.names = FALSE)
+    }
+    else{
+      tv <- readLines(".Renviron")
+      if(isTRUE(any(grepl("NASS_KEY", tv)))){
+        stop("A NASS_KEY already exists. You can overwrite it with the ",
+             "argument overwrite=TRUE", call.=FALSE)
+      }
+    }
+  }
+
+  keyconcat <- paste("NASS_KEY=", "'", token, "'", sep = "")
+  # Append API key to .Renviron file
+  write(keyconcat, ".Renviron", sep = "\n", append = TRUE)
+  message('Your API key has been stored in your .Renviron and can be accessed',
+          ' by Sys.getenv("NASS_KEY")')
+  return(token)
+}

@@ -1,0 +1,21 @@
+title: usdarnass
+url: http://rdinter.github.io/usdarnass
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-77026562-2
+
+reference:
+- title: Authentication
+  desc: ~
+  contents:
+  - '`nass_set_key`'
+- title: Categories
+  desc: ~
+  contents:
+  - '`nass_count`'
+  - '`nass_param`'
+- title: Data
+  desc: ~
+  contents:
+  - '`nass_data`'

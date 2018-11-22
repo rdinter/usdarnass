@@ -1,0 +1,9 @@
+pandoc: 1.19.2.4
+pkgdown: 1.2.0
+pkgdown_sha: ~
+articles:
+  usdarnass: usdarnass.html
+urls:
+  reference: http://rdinter.github.io/usdarnass/reference
+  article: http://rdinter.github.io/usdarnass/articles
+
