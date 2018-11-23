@@ -84,9 +84,9 @@ As previously stated, the workhorse function is the `nass_data()` function which
 
 ```{r get_data}
 j5 <- nass_data(year = 2012,
-                short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $",
-                county_name = "WAKE",
-                state_name = "NORTH CAROLINA")
+          short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $",
+          county_name = "WAKE",
+          state_name = "NORTH CAROLINA")
 str(j5)
 ```
 

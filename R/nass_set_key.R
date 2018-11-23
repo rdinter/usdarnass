@@ -15,7 +15,7 @@
 #' @export nass_set_key
 #' @examples
 #'
-#' \donttest{
+#' \dontrun{
 #' set_nass_key("111111abc")
 #' # First time, relead your enviornment so you can use the key without
 #' # restarting R.
@@ -24,7 +24,7 @@
 #' Sys.getenv("NASS_KEY")
 #' }
 #'
-#' \donttest{
+#' \dontrun{
 #' # If you need to overwrite an existing key:
 #' nass_set_key("111111abc", overwrite = TRUE)
 #' # First time, relead your enviornment so you can use the key without
@@ -37,15 +37,15 @@
 nass_set_key <- function(token = NA, overwrite = NA){
   # go to the home dir. and look for an .Renviron file. If not, create one.
   setwd(Sys.getenv("HOME"))
-  if(file.exists(".Renviron")){
+  if (file.exists(".Renviron")) {
     # Backup original .Renviron before doing anything else here.
     file.copy(".Renviron", ".Renviron_backup")
   }
-  if(!file.exists(".Renviron")){
+  if (!file.exists(".Renviron")) {
     file.create(".Renviron")
   }
   else{
-    if(isTRUE(overwrite)){
+    if (isTRUE(overwrite)) {
       message("Your original .Renviron will be backed up and stored in your ",
               "R HOME directory if needed.")
       oldenv <- utils::read.table(".Renviron", stringsAsFactors = FALSE)
@@ -55,9 +55,9 @@ nass_set_key <- function(token = NA, overwrite = NA){
     }
     else{
       tv <- readLines(".Renviron")
-      if(isTRUE(any(grepl("NASS_KEY", tv)))){
+      if (isTRUE(any(grepl("NASS_KEY", tv)))) {
         stop("A NASS_KEY already exists. You can overwrite it with the ",
-             "argument overwrite=TRUE", call.=FALSE)
+             "argument overwrite=TRUE", call. = FALSE)
       }
     }
   }
