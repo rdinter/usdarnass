@@ -163,17 +163,23 @@ NASS_KEY that you already have in your <code>.Renviron</code> file.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-</div><div class='input'><span class='fu'>set_nass_key</span>(<span class='st'>"111111abc"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in set_nass_key("111111abc"): could not find function "set_nass_key"</span></div><div class='input'><span class='co'># First time, relead your enviornment so you can use the key without</span>
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>set_nass_key</span>(<span class='st'>"111111abc"</span>)
+<span class='co'># First time, relead your enviornment so you can use the key without</span>
 <span class='co'># restarting R.</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readRenviron'>readRenviron</a></span>(<span class='st'>"~/.Renviron"</span>)
 <span class='co'># You can check it with:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.getenv'>Sys.getenv</a></span>(<span class='st'>"NASS_KEY"</span>)</div><div class='output co'>#&gt; [1] "21E12D8F-E59B-3C68-9113-EC288AA44D4D"</div><div class='input'>
-</div><div class='input'><span class='co'># If you need to overwrite an existing key:</span>
-<span class='fu'>nass_set_key</span>(<span class='st'>"111111abc"</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Your original .Renviron will be backed up and stored in your R HOME directory if needed.</span></div><div class='output co'>#&gt; <span class='message'>Your API key has been stored in your .Renviron and can be accessed by Sys.getenv("NASS_KEY")</span></div><div class='output co'>#&gt; [1] "111111abc"</div><div class='input'><span class='co'># First time, relead your enviornment so you can use the key without</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.getenv'>Sys.getenv</a></span>(<span class='st'>"NASS_KEY"</span>)
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># If you need to overwrite an existing key:</span>
+<span class='fu'>nass_set_key</span>(<span class='st'>"111111abc"</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># First time, relead your enviornment so you can use the key without</span>
 <span class='co'># restarting R.</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readRenviron'>readRenviron</a></span>(<span class='st'>"~/.Renviron"</span>)
 <span class='co'># You can check it with:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.getenv'>Sys.getenv</a></span>(<span class='st'>"NASS_KEY"</span>)</div><div class='output co'>#&gt; [1] "111111abc"</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.getenv'>Sys.getenv</a></span>(<span class='st'>"NASS_KEY"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

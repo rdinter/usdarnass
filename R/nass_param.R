@@ -11,12 +11,12 @@
 #' @export nass_param
 #' @examples
 #'
-#' \donttest{
+#' \dontrun{
 #' # Return the program sources for data
 #' nass_param("source_desc")
 #' }
 #'
-#' \donttest{
+#' \dontrun{
 #' # Return the group categories available in the CROPS sector
 #' nass_param("group_desc", sector_desc = "CROPS")
 #' }
@@ -101,7 +101,7 @@ nass_param <- function(param = NULL,
   temp_url <- httr::modify_url(base_url, query = args)
 
   if (!is.null(param)) {
-    full_url <- paste0(temp_url, "&param=", param)
+    full_url <- paste0(temp_url, "&param=", tolower(param))
     temp     <- httr::GET(full_url)
     tt       <- check_response(temp)
 

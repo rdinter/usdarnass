@@ -99,12 +99,12 @@ All possible values of a parameter for a given query. Helps to
 }
 \examples{
 
-\donttest{
+\dontrun{
 # Return the program sources for data
 nass_param("source_desc")
 }
 
-\donttest{
+\dontrun{
 # Return the group categories available in the CROPS sector
 nass_param("group_desc", sector_desc = "CROPS")
 }

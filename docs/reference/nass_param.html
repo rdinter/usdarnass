@@ -265,11 +265,14 @@ no API key stored in the environment, a character string can be provided.</p></t
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-</div><div class='input'><span class='co'># Return the program sources for data</span>
-<span class='fu'>nass_param</span>(<span class='st'>"source_desc"</span>)</div><div class='output co'>#&gt; [1] "CENSUS" "SURVEY"</div><div class='input'>
-</div><div class='input'><span class='co'># Return the group categories available in the CROPS sector</span>
-<span class='fu'>nass_param</span>(<span class='st'>"group_desc"</span>, <span class='kw'>sector_desc</span> <span class='kw'>=</span> <span class='st'>"CROPS"</span>)</div><div class='output co'>#&gt; [1] "CROP TOTALS"       "FIELD CROPS"       "FRUIT &amp; TREE NUTS"
-#&gt; [4] "HORTICULTURE"      "VEGETABLES"       </div></pre>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Return the program sources for data</span>
+<span class='fu'>nass_param</span>(<span class='st'>"source_desc"</span>)
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Return the group categories available in the CROPS sector</span>
+<span class='fu'>nass_param</span>(<span class='st'>"group_desc"</span>, <span class='kw'>sector_desc</span> <span class='kw'>=</span> <span class='st'>"CROPS"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

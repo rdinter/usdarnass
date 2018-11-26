@@ -60,12 +60,12 @@
 #' @export nass_count
 #' @examples
 #'
-#' \donttest{
+#' \dontrun{
 #' # Determine all the observations in NASS
 #' nass_count()
 #' }
 #'
-#' \donttest{
+#' \dontrun{
 #' # Find the number of observations for Wake County in North Carolina
 #' nass_count(state_name = "NORTH CAROLINA", county_name = "WAKE")
 #' }

@@ -26,7 +26,7 @@ This function will add your NASS Quickstats API key to your
 }
 \examples{
 
-\donttest{
+\dontrun{
 set_nass_key("111111abc")
 # First time, relead your enviornment so you can use the key without
 # restarting R.
@@ -35,7 +35,7 @@ readRenviron("~/.Renviron")
 Sys.getenv("NASS_KEY")
 }
 
-\donttest{
+\dontrun{
 # If you need to overwrite an existing key:
 nass_set_key("111111abc", overwrite = TRUE)
 # First time, relead your enviornment so you can use the key without
