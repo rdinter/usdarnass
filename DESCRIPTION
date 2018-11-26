@@ -12,7 +12,7 @@ Description: An alternative for downloading various USDA data from
     token from the mentioned website in order for this package to work.
 URL: https://github.com/rdinter/usdarnass
 BugReports: https://github.com/rdinter/usdarnass/issues
-License: GPL (>= 2)
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: httr,

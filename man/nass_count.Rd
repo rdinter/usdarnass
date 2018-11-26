@@ -81,7 +81,7 @@ month. "POINT IN TIME" is as of a particular day.}
 freq_desc.}
 
 \item{token}{API key, default is to use the value stored in \code{.Renviron}
-which is stored from the \code{\link{set_nass_key}} function. If there is
+which is stored from the \code{\link{nass_set_key}} function. If there is
 no API key stored in the environment, a character string can be provided.}
 
 \item{\\dots}{Not used.}

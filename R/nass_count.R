@@ -53,7 +53,7 @@
 #' @param reference_period_desc "Period" - The specific time frame, within a
 #'   freq_desc.
 #' @param token API key, default is to use the value stored in \code{.Renviron}
-#'   which is stored from the \code{\link{set_nass_key}} function. If there is
+#'   which is stored from the \code{\link{nass_set_key}} function. If there is
 #'   no API key stored in the environment, a character string can be provided.
 #' @param \\dots Not used.
 #' @return Number of observations.

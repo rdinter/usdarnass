@@ -1,25 +1,25 @@
-# Argument List as defaulted null ....
-args_list <- function(...){
-  match.call(expand.dots = T)
-  args <- list(source_desc = source_desc,
-               sector_desc = sector_desc,
-               group_desc = group_desc,
-               commodity_desc = commodity_desc,
-               short_desc = short_desc,
-               domain_desc = domain_desc,
-               domaincat_desc = domaincat_desc,
-               agg_level_desc = agg_level_desc,
-               statisticcat_desc = statisticcat_desc,
-               state_name = state_name,
-               asd_desc = asd_desc,
-               county_name = county_name,
-               region_desc = region_desc,
-               zip_5 = zip_5,
-               watershed_desc = watershed_desc,
-               freq_desc = freq_desc,
-               reference_period_desc = reference_period_desc)
-  return(args)
-}
+# # Argument List as defaulted null ....
+# args_list <- function(...){
+#   match.call(expand.dots = T)
+#   args <- list(source_desc = source_desc,
+#                sector_desc = sector_desc,
+#                group_desc = group_desc,
+#                commodity_desc = commodity_desc,
+#                short_desc = short_desc,
+#                domain_desc = domain_desc,
+#                domaincat_desc = domaincat_desc,
+#                agg_level_desc = agg_level_desc,
+#                statisticcat_desc = statisticcat_desc,
+#                state_name = state_name,
+#                asd_desc = asd_desc,
+#                county_name = county_name,
+#                region_desc = region_desc,
+#                zip_5 = zip_5,
+#                watershed_desc = watershed_desc,
+#                freq_desc = freq_desc,
+#                reference_period_desc = reference_period_desc)
+#   return(args)
+# }
 
 # CHECK IF THERE IS AN API TOKEN AVAILABLE
 check_key <- function(x){
