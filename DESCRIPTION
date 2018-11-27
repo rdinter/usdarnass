@@ -2,11 +2,6 @@ Package: usdarnass
 Type: Package
 Title: USDA NASS Quickstats API
 Version: 0.1.0
-Author@R: c(person("Dinterman", "Robert",email = "robert.dinterman@gmail.com", role = c("aut", "cre")),
-    person("Eyer", "Jonathan", email = "jeyer@usc.edu", role = "aut"))
-Author: Robert Dinterman [aut, cre],
-  Jonathan Eyer [aut]
-Maintainer: Robert Dinterman <robert.dinterman@gmail.com>
 Description: An alternative for downloading various USDA data from
     <https://quickstats.nass.usda.gov/> through R. You must sign up for an API
     token from the mentioned website in order for this package to work.
@@ -26,3 +21,13 @@ Suggests:
     rmarkdown,
     tidyverse
 VignetteBuilder: knitr
+Authors@R: 
+    c(person(given = "Robert",
+             family = "Dinterman",
+             role = c("cre", "aut"),
+             email = "robert.dinterman@gmail.com",
+             comment = c(ORCID = "0000-0002-9055-6082")),
+      person(given = "Jonathan",
+             family = "Eyer",
+             role = "aut",
+             email = "jeyer@usc.edu"),

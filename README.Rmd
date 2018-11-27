@@ -54,7 +54,7 @@ See the [documentation site](http://rdinter.github.io/usdarnass/).
 
 # See Also
 
-There are other `R` packages that work with USDA Quickstats that may be more useful to others:
+There are other `R` packages that work with USDA Quick Stats that may be more useful to others:
 
 * [emraher/rnass](https://github.com/emraher/rnass)
 * [potterzot/rnassqs](https://github.com/potterzot/rnassqs)
