@@ -30,4 +30,4 @@ Authors@R:
       person(given = "Jonathan",
              family = "Eyer",
              role = "aut",
-             email = "jeyer@usc.edu"),
+             email = "jeyer@usc.edu"))
