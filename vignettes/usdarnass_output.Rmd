@@ -1,0 +1,158 @@
+---
+title: "Output of usdarnass"
+author: "Robert Dinterman"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Output of usdarnass}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library("knitr")
+opts_chunk$set(
+  collapse = TRUE,
+  eval = !(Sys.getenv("NASS_KEY") == ""),
+  comment = "#>"
+)
+```
+
+# Introduction
+
+Each successful call of the `nass_data()` command will return a data.frame object with 39 variables, although a handful of these variables will have the same value for each observation in the data.frame due to the nature of setting parameters for a query. The resulting data.frame is of the [long variety](http://vita.had.co.nz/papers/tidy-data.html) with the `Value` variable as the numerical variable of interest for the query.
+
+## Official USDA Objects
+
+The official documentation for each of these variables from the USDA are as follows:
+
+- `week_ending` - Week ending date, used when freq_desc = WEEKLY.
+- `state_name` - State full name.
+- `country_code` - US Census Bureau, Foreign Trade Division 4-digit country code, as of April, 2007.
+- `location_desc` - Full description for the location dimension.
+- `begin_code` - If applicable, a 2-digit code corresponding to the beginning of the reference period (e.g., for freq_desc = MONTHLY, begin_code ranges from 01 (January) to 12 (December)).
+- `zip_5` - US Postal Service 5-digit zip code.
+- `county_ansi` - ANSI standard 3-digit county codes.
+- `state_alpha` - State abbreviation, 2-character alpha code.
+- `util_practice_desc` - Utilizations (e.g., GRAIN, FROZEN, SLAUGHTER) or marketing channels (e.g., FRESH MARKET, PROCESSING, RETAIL).
+- `domain_desc` - Generally another characteristic of operations that produce a particular commodity (e.g., ECONOMIC CLASS, AREA OPERATED, NAICS CLASSIFICATION, SALES). For chemical usage data, the domain describes the type of chemical applied to the commodity. The domain = TOTAL will have no further breakouts; i.e., the data value pertains completely to the short_desc.
+- `asd_desc` - Ag statistics district name.
+- `freq_desc` - Length of time covered (ANNUAL, SEASON, MONTHLY, WEEKLY, POINT IN TIME). MONTHLY often covers more than one month. POINT IN TIME is as of a particular day.
+- `prodn_practice_desc` - A method of production or action taken on the commodity (e.g., IRRIGATED, ORGANIC, ON FEED).
+- `end_code` - If applicable, a 2-digit code corresponding to the end of the reference period (e.g., the reference period of JAN THRU MAR will have begin_code = 01 and end_code = 03).
+- `sector_desc` - Five high level, broad categories useful to narrow down choices (CROPS, ANIMALS & PRODUCTS, ECONOMICS, DEMOGRAPHICS, and ENVIRONMENTAL).
+- `short_desc` - A concatenation of six columns: commodity_desc, class_desc, prodn_practice_desc, util_practice_desc, statisticcat_desc, and unit_desc.
+- `country_name` - County name.
+- `Value` - Published data value or suppression reason code.
+- `reference_period_desc` - The specific time frame, within a freq_desc.
+- `CV (%)` - Coefficient of variation. Available for the 2012 Census of Agriculture only. County-level CVs are generalized.
+- `class_desc` - Generally a physical attribute (e.g., variety, size, color, gender) of the commodity.
+- `asd_code` - NASS defined county groups, unique within a state, 2-digit ag statistics district code.
+- `agg_level_desc` - Aggregation level or geographic granularity of the data (e.g., STATE, AG DISTRICT, COUNTY, REGION, ZIP CODE).
+- `county_name` - Country name.
+- `region_desc` - NASS defined geographic entities not readily defined by other standard geographic levels. A region can be a less than a state (SUB-STATE) or a group of states (MULTI-STATE), and may be specific to a commodity.
+- `watershed_desc` - Name assigned to the HUC.
+- `state_ansi` - American National Standards Institute (ANSI) standard 2-digit state codes.
+- `congr_district_code` - US Congressional District 2-digit code.
+- `domaincat_desc` - Categories or partitions within a domain (e.g., under domain = SALES, domain categories include \$1,000 TO \$9,999, \$10,000 TO \$19,999, etc).
+- `state_fips_code` - NASS 2-digit state codes; include 99 and 98 for US TOTAL and OTHER STATES, respectively; otherwise match ANSI codes.
+- `group_desc` - Subsets within sector (e.g., under sector = CROPS, the groups are FIELD CROPS, FRUIT & TREE NUTS, HORTICULTURE, and VEGETABLES).
+- `watershed_code` - US Geological Survey (USGS) 8-digit Hydrologic Unit Code (HUC) for watersheds.
+- `unit_desc` - The unit associated with the statistic category (e.g., ACRES, $ / LB, HEAD, $, OPERATIONS).
+- `source_desc` - Source of data (CENSUS or SURVEY). Census program includes the Census of Ag as well as follow up projects. Survey program includes national, state, and county surveys.
+- `load_time` - Date and time indicating when record was inserted into Quick Stats database.
+- `county_code` - NASS 3-digit county codes; includes 998 for OTHER (COMBINED) COUNTIES and Alaska county codes; otherwise match ANSI codes.
+- `statisticcat_desc` - The aspect of a commodity being measured (e.g., AREA HARVESTED, PRICE RECEIVED, INVENTORY, SALES).
+- `commodity_desc` - The primary subject of interest (e.g., CORN, CATTLE, LABOR, TRACTORS, OPERATORS).
+- `year` - The numeric year of the data.
+
+I learn best through examples, so I'll cover a few different levels of analysis and subtleties related to the data.
+
+# County Level Example
+
+We can set a query where we return all data at the county level in Ohio related to rent, which is equivalent to [https://quickstats.nass.usda.gov/](https://quickstats.nass.usda.gov/) setting "Geographic Level" to COUNTY, "State" equal to Ohio, and "Commodity" equal to RENT :
+
+```{r start, warning=FALSE, message=FALSE}
+library("usdarnass")
+library("dplyr") # Helpful package
+
+ohio_rent <- nass_data(commodity_desc = "RENT", agg_level_desc = "COUNTY",
+                       state_name = "OHIO")
+glimpse(ohio_rent)
+```
+
+The `agg_level_desc`, `commodity_desc`, and `state_name` variables are all the same because the query parameters were set on those values. It turns out a few other variables will be identical for the whole data.frame because they do not vary based on county level observations in Ohio: `country_code`, `state_alpha`, `state_ansi`, and `state_fips_code`.
+
+There are a fair amount of other variables which are all the same for the entire data.frame, but these variables are not the same because of the regional aggregation variables but because we have subset the data by the `commodity_desc` as "RENT".
+
+The various other parameters that we could have set in this query of interest are from the `short_desc` parameter, which we could use the `nass_param()` function to view the options for this data item:
+
+```{r rent_nass_param}
+nass_param("short_desc", commodity_desc = "RENT", agg_level_desc = "COUNTY", state_name = "OHIO")
+```
+
+Alternatively, in the previously returned query with the `nass_data()` function, we could view the frequency of the different `short_desc` variables to get to the same outcome but with the additional benefit of knowing the number of observations:
+
+```{r rent_nass_param_alt}
+table(ohio_rent$short_desc)
+```
+
+## Dominant form of rent in Ohio
+
+In Ohio, the dominant form of cash rent is for non-irrigated cropland and most counties in Ohio are surveyed in the state and have a usable value for cash rent in a year. But this is not exactly right, so we can see this by subsetting our original query for only non-irrigated cropland and look at the number of counties in each year's observation.
+
+```{r non_irrigated}
+non_irrigated <- ohio_rent %>% 
+  filter(grepl("NON-IRRIGATED", short_desc))
+table(non_irrigated$year) # Observation per year
+```
+
+The cash rent values begin in 2008 with a small subset of counties in Ohio and then cover the vast majority of the state in 2009 onward. As it turns out, the entire state is surveyed but some counties do not have enough observations to have a statistically relevant sample and are thus combined at the agricultural reporting district level. This can be see with a listing of all of the counties in Ohio with rent data available:
+
+```{r counties}
+table(non_irrigated$county_name)
+# nass_param("county_name", state_name = "OHIO")
+```
+
+The "OTHER (COMBINED) COUNTIES" value has by far and away the most observations over this time and, if one knows all of the counties in Ohio, there are a few missing counties that we need to input their values for. Each of the "OTHER (COMBINED) COUNTIES" values is for a specific agricultural reporting district:
+
+```{r asd}
+non_irrigated %>%
+  filter(county_name == "OTHER (COMBINED) COUNTIES") %>%
+  pull(asd_code) %>%
+  table()
+```
+
+There are nine reporting districts in Ohio and eight of the nine have observations which combine counties for an observation -- which implies some counties are missing official observations for the statistics in question. It is not necessarily the case that the counties are completely missing but they are suppressed. One method for correcting for these missing values is to replace the missing counties with the "OTHER (COMBINED) COUNTIES" category for average rent.
+
+In order to do this, we first need a full set of all of the counties in Ohio along with their corresponding agricultural district number. There are many ways to accomplish this, but I will go about this by leveraging the 2012 Agricultural Census data which is in Quick Stats and contains a category for the number of farms in each Ohio county. The number of farms is not helpful for our data concerns but it does serve as a way to return a data.frame with 88 observations in Ohio with each uniquely corresponding to a county in Ohio.
+
+```{r ag_census}
+farms <- nass_data(source_desc = "CENSUS", year = 2012, state_name = "OHIO", agg_level_desc = "COUNTY", domain_desc = "TOTAL", short_desc = "FARM OPERATIONS - NUMBER OF OPERATIONS")
+```
+
+At this point, we want to make sure that each year for our non_irrigated rent data has all 88 counties with an NA value if it does not exist. Then, we want to impute the "OTHER (COMBINED) COUNTIES" category for all of the NAs. To do this we will create the backbone of our desired observations from the farms and then fully merge this with the current data from Quick Stats. The resulting data.frame will have missing "Value" observations for the counties which do not have observations and we will impute the value from "OTHER (COMBINED) COUNTIES". And last of all, with these data the only important aspect of these observations is that we have a county identifier, locational aspects, and the year in question. Much of the rest of the variables in the dataset are not of importance to us so we will have only keep the remaining important variables and convert them to numeric.
+
+```{r combined}
+library("tidyr")
+base_rent <- farms %>% 
+  select(state_fips_code, county_code, county_name, asd_code, asd_desc) %>% 
+  expand(year = unique(non_irrigated$year), nesting(state_fips_code, county_code, county_name, asd_code)) %>% 
+  full_join(non_irrigated)
+
+# Correct for missing values in the "other"
+base_rent <- base_rent %>% 
+  arrange(year, asd_code, county_code) %>% 
+  group_by(year, asd_code) %>% 
+  mutate(Value = ifelse(is.na(Value), Value[county_code == "998"], Value)) %>% 
+  filter(county_code != "998")
+
+# Finally, select only the relevant variables are rename
+base_rent <- base_rent %>% 
+  select(year, state_fips_code, county_code, county_name, asd_code, rent = Value) %>% 
+  mutate(rent = as.numeric(rent),
+         fips = as.numeric(paste0(state_fips_code, county_code)))
+
+glimpse(base_rent)
+```
+

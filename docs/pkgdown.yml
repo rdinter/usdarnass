@@ -3,6 +3,7 @@ pkgdown: 1.2.0
 pkgdown_sha: ~
 articles:
   usdarnass: usdarnass.html
+  usdarnass_output: usdarnass_output.html
 urls:
   reference: http://rdinter.github.io/usdarnass/reference
   article: http://rdinter.github.io/usdarnass/articles

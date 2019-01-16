@@ -56,5 +56,7 @@ See the [documentation site](http://rdinter.github.io/usdarnass/).
 
 There are other `R` packages that work with USDA Quick Stats that may be more useful to others:
 
-* [emraher/rnass](https://github.com/emraher/rnass)
-* [potterzot/rnassqs](https://github.com/potterzot/rnassqs)
+- [emraher/rnass](https://github.com/emraher/rnass)
+- [potterzot/rnassqs](https://github.com/potterzot/rnassqs)
+
+If you are interested in download all of the Quick Stats data to your local machine, then their [FTP](ftp://ftp.nass.usda.gov/quickstats/) site is the best option for downloading all.

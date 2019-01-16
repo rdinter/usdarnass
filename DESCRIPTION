@@ -19,7 +19,9 @@ RoxygenNote: 6.1.1
 Suggests: 
     knitr,
     rmarkdown,
-    tidyverse
+    tidyverse,
+    dplyr,
+    tidyr
 VignetteBuilder: knitr
 Authors@R: 
     c(person(given = "Robert",
