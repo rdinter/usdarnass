@@ -3,6 +3,9 @@
 #'   request is limited to 50,000 records per the API. Use
 #'   \code{\link{nass_count}} to determine number of records in query.
 #' @inheritParams nass_count
+#' @param format Output format from API call. Defaults to CSV as it is typically
+#'   the smallest sized call. Other options are JSON and XML but these are not
+#'   recommended. XML currently not supported.
 #' @param numeric_vals Optional to convert the year, Value, and coefficient of
 #'   variation (CV \%) to numerics as opposed to defaulted character values.
 #'   Default is to FALSE as some Values have a suppression code. Converting to
@@ -43,8 +46,11 @@ nass_data <- function(source_desc = NULL,
                       freq_desc = NULL,
                       reference_period_desc = NULL,
                       token = NULL,
+                      format = c("CSV", "JSON", "XML"),
                       numeric_vals = FALSE){
-
+  format = match.arg(format)
+  if (format == "XML") stop("XML not supported yet.")
+  
   token <- check_key(token)
 
   # Check to see if year used a logical operator
@@ -69,7 +75,8 @@ nass_data <- function(source_desc = NULL,
                zip_5 = zip_5,
                watershed_desc = watershed_desc,
                freq_desc = freq_desc,
-               reference_period_desc = reference_period_desc)
+               reference_period_desc = reference_period_desc,
+               format = format)
   
   # Arguments to upper case
   args <- lapply(args, function(x) if (!is.null(x)) toupper(x))
@@ -112,18 +119,16 @@ nass_data <- function(source_desc = NULL,
   full_url <- httr::modify_url(base_url, query = args)
   temp     <- httr::GET(full_url)
   tt       <- check_response(temp)
-
-  if (methods::is(temp$headers, "list")) {
-    nass <- jsonlite::fromJSON(full_url)
-    nass <- nass[["data"]]
-    } else {
-      stop("Parameter entered is not valid")
-      }
-
-  if (numeric_vals) {
-    nass$year     <- suppressWarnings(readr::parse_number(nass$year))
-    nass$Value    <- suppressWarnings(readr::parse_number(nass$Value))
-    nass$`CV (%)` <- suppressWarnings(readr::parse_number(nass$`CV (%)`))
+  
+  if (methods::is(tt, "data.frame")) {
+    nass <- tt
+    if (numeric_vals) {
+      nass$year     <- as.numeric(nass$year)
+      nass$Value    <- suppressWarnings(as.numeric(gsub(",", "", nass$Value)))
+      nass$`CV (%)` <- suppressWarnings(as.numeric(gsub(",", "", nass$`CV (%)`)))
+    }
+  } else {
+    stop("Parameter entered is not valid")
   }
 
   return(nass)

@@ -10,7 +10,8 @@ nass_data(source_desc = NULL, sector_desc = NULL, group_desc = NULL,
   statisticcat_desc = NULL, state_name = NULL, asd_desc = NULL,
   county_name = NULL, region_desc = NULL, zip_5 = NULL,
   watershed_desc = NULL, year = NULL, freq_desc = NULL,
-  reference_period_desc = NULL, token = NULL, numeric_vals = FALSE)
+  reference_period_desc = NULL, token = NULL, format = c("CSV",
+  "JSON", "XML"), numeric_vals = FALSE)
 }
 \arguments{
 \item{source_desc}{"Program" - Source of data ("CENSUS" or "SURVEY"). Census
@@ -83,6 +84,10 @@ freq_desc.}
 \item{token}{API key, default is to use the value stored in \code{.Renviron}
 which is stored from the \code{\link{nass_set_key}} function. If there is
 no API key stored in the environment, a character string can be provided.}
+
+\item{format}{Output format from API call. Defaults to CSV as it is typically
+the smallest sized call. Other options are JSON and XML but these are not
+recommended. XML currently not supported.}
 
 \item{numeric_vals}{Optional to convert the year, Value, and coefficient of
 variation (CV \%) to numerics as opposed to defaulted character values.
