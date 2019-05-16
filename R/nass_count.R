@@ -152,7 +152,7 @@ nass_count <- function(source_desc = NULL,
   tt       <- check_response(temp)
 
   if (names(tt) == "count"){
-    count_data <- readr::parse_number(tt[["count"]])
+    count_data <- as.numeric(tt[["count"]])
     } else {
       stop("Parameter entered is not valid")
       }

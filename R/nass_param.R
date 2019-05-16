@@ -105,7 +105,7 @@ nass_param <- function(param = NULL,
     temp     <- httr::GET(full_url)
     tt       <- check_response(temp)
 
-    if (methods::is(tt, "list")) {
+    if (names(tt) == param) {
       param_data <- as.character(unlist(tt))
       } else {
         stop("Parameter entered is not valid")
