@@ -2,20 +2,20 @@
 % Please edit documentation in R/nass_set_key.R
 \name{nass_set_key}
 \alias{nass_set_key}
-\title{Install a NASS Quickstats API Key in Your \code{.Renviron} File for
+\title{Install a NASS Quick Stats API Key in Your \code{.Renviron} File for
   Repeated Use}
 \usage{
 nass_set_key(token = NA, overwrite = NA)
 }
 \arguments{
-\item{token}{The API key provided to you from NASS formated in quotes. A key
+\item{token}{The API key provided to you from NASS formatted in quotes. A key
 can be acquired at \url{https://quickstats.nass.usda.gov/api}}
 
 \item{overwrite}{If this is set to TRUE, it will overwrite an existing
 NASS_KEY that you already have in your \code{.Renviron} file.}
 }
 \description{
-This function will add your NASS Quickstats API key to your
+This function will add your NASS Quick Stats API key to your
   \code{.Renviron} file so it can be called securely without being stored in
   your code. After you have installed your key, it can be called any time by
   typing \code{Sys.getenv("NASS_KEY")} and can be used in package functions

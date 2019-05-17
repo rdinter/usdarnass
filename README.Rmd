@@ -22,7 +22,7 @@ An alternative for downloading various USDA data from [https://quickstats.nass.u
 
 # Install
 
-Eventually, this package will be uploaded to [CRAN](https://cran.r-project.org/). At which point, you should be able to install the package through the typical method:
+Eventually, this package will be uploaded to [CRAN](https://cran.r-project.org/) at which point you should be able to install the package through the typical method:
 
 ```{r installation_cran, eval = FALSE}
 install.packages("usdarnass")

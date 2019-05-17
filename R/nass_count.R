@@ -1,6 +1,6 @@
 #' @title Get number of observations from USDA NASS data query
 #' @description Checks the number of observations that will be returned in a
-#'   data request. All queries to the Quickstats are limited to 50,000
+#'   data request. All queries to the Quick Stats are limited to 50,000
 #'   observations. This is a helpful function in determining how to structure a
 #'   data request to fit within the 50,000 limit.
 #' @param source_desc "Program" - Source of data ("CENSUS" or "SURVEY"). Census

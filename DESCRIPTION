@@ -1,6 +1,6 @@
 Package: usdarnass
 Type: Package
-Title: USDA NASS Quickstats API
+Title: USDA NASS Quick Stats API
 Version: 0.1.0
 Description: An alternative for downloading various USDA data from
     <https://quickstats.nass.usda.gov/> through R. You must sign up for an API

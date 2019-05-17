@@ -98,7 +98,7 @@ numeric will result in suppressed values to be NA.}
 A data frame containing query to API.
 }
 \description{
-Sends query to Quickstats API from given parameter values. Data
+Sends query to Quick Stats API from given parameter values. Data
   request is limited to 50,000 records per the API. Use
   \code{\link{nass_count}} to determine number of records in query.
 }

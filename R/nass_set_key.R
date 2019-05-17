@@ -1,6 +1,6 @@
-#' @title Install a NASS Quickstats API Key in Your \code{.Renviron} File for
+#' @title Install a NASS Quick Stats API Key in Your \code{.Renviron} File for
 #'   Repeated Use
-#' @description This function will add your NASS Quickstats API key to your
+#' @description This function will add your NASS Quick Stats API key to your
 #'   \code{.Renviron} file so it can be called securely without being stored in
 #'   your code. After you have installed your key, it can be called any time by
 #'   typing \code{Sys.getenv("NASS_KEY")} and can be used in package functions
@@ -8,7 +8,7 @@
 #'   function will create on for you. If you already have an \code{.Renviron}
 #'   file, the function will append the key to your existing file, while making
 #'   a backup of your original file for disaster recovery purposes.
-#' @param token The API key provided to you from NASS formated in quotes. A key
+#' @param token The API key provided to you from NASS formatted in quotes. A key
 #'   can be acquired at \url{https://quickstats.nass.usda.gov/api}
 #' @param overwrite If this is set to TRUE, it will overwrite an existing
 #'   NASS_KEY that you already have in your \code{.Renviron} file.
