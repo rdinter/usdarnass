@@ -2,9 +2,10 @@ Package: usdarnass
 Type: Package
 Title: USDA NASS Quick Stats API
 Version: 0.1.0
-Description: An alternative for downloading various USDA data from
-    <https://quickstats.nass.usda.gov/> through R. You must sign up for an API
-    token from the mentioned website in order for this package to work.
+Description: An alternative for downloading various United States Department of
+    Agriculture (USDA) data from <https://quickstats.nass.usda.gov/> through R. 
+    You must sign up for an API token from the mentioned website in order for 
+    this package to work.
 URL: https://github.com/rdinter/usdarnass
 BugReports: https://github.com/rdinter/usdarnass/issues
 License: GPL-3

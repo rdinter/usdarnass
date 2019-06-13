@@ -1,4 +1,4 @@
-#' @title Get data from the USDA NASS data query
+#' @title Get data from the Quick Stats query
 #' @description Sends query to Quick Stats API from given parameter values. Data
 #'   request is limited to 50,000 records per the API. Use
 #'   \code{\link{nass_count}} to determine number of records in query.

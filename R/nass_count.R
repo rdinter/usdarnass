@@ -1,4 +1,4 @@
-#' @title Get number of observations from USDA NASS data query
+#' @title Get number of observations from Quick Stats query
 #' @description Checks the number of observations that will be returned in a
 #'   data request. All queries to the Quick Stats are limited to 50,000
 #'   observations. This is a helpful function in determining how to structure a
