@@ -2,7 +2,7 @@
 % Please edit documentation in R/nass_count.R
 \name{nass_count}
 \alias{nass_count}
-\title{Get number of observations from USDA NASS data query}
+\title{Get number of observations from Quick Stats query}
 \usage{
 nass_count(source_desc = NULL, sector_desc = NULL, group_desc = NULL,
   commodity_desc = NULL, short_desc = NULL, domain_desc = NULL,

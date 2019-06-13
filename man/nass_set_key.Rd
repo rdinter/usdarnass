@@ -2,20 +2,19 @@
 % Please edit documentation in R/nass_set_key.R
 \name{nass_set_key}
 \alias{nass_set_key}
-\title{Install a NASS Quick Stats API Key in Your \code{.Renviron} File for
-  Repeated Use}
+\title{Set a Quick Stats API key}
 \usage{
-nass_set_key(token = NA, overwrite = NA)
+nass_set_key(key = NULL, overwrite = FALSE)
 }
 \arguments{
-\item{token}{The API key provided to you from NASS formatted in quotes. A key
+\item{key}{The API key provided to you from NASS formatted in quotes. A key
 can be acquired at \url{https://quickstats.nass.usda.gov/api}}
 
-\item{overwrite}{If this is set to TRUE, it will overwrite an existing
+\item{overwrite}{If this is set to TRUE, it will write an existing
 NASS_KEY that you already have in your \code{.Renviron} file.}
 }
 \description{
-This function will add your NASS Quick Stats API key to your
+This function will add your Quick Stats API key to your
   \code{.Renviron} file so it can be called securely without being stored in
   your code. After you have installed your key, it can be called any time by
   typing \code{Sys.getenv("NASS_KEY")} and can be used in package functions
@@ -27,7 +26,7 @@ This function will add your NASS Quick Stats API key to your
 \examples{
 
 \dontrun{
-set_nass_key("111111abc")
+set_nass_key("abcd012345678901234567890123456789")
 # First time, relead your enviornment so you can use the key without
 # restarting R.
 readRenviron("~/.Renviron")
@@ -37,7 +36,7 @@ Sys.getenv("NASS_KEY")
 
 \dontrun{
 # If you need to overwrite an existing key:
-nass_set_key("111111abc", overwrite = TRUE)
+nass_set_key("abcd012345678901234567890123456789", overwrite = TRUE)
 # First time, relead your enviornment so you can use the key without
 # restarting R.
 readRenviron("~/.Renviron")
