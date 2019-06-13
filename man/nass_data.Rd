@@ -2,7 +2,7 @@
 % Please edit documentation in R/nass_data.R
 \name{nass_data}
 \alias{nass_data}
-\title{Get data from the USDA NASS data query}
+\title{Get data from the Quick Stats query}
 \usage{
 nass_data(source_desc = NULL, sector_desc = NULL, group_desc = NULL,
   commodity_desc = NULL, short_desc = NULL, domain_desc = NULL,
