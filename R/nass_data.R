@@ -21,8 +21,7 @@
 #' }
 #'
 #' \dontrun{
-#' # Get county level values in 2012 for the specific data item of the asset
-#'  value of agricultural land (including buildings) as measured in dollars
+#' # Get county level values in 2012 for the specific data item
 #'   nass_data(year = 2012, agg_level_desc = "COUNTY",
 #'    short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $")
 #' }
