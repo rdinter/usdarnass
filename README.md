@@ -41,8 +41,8 @@ library("usdarnass")
 # Usage
 
 See the [Get
-started](http://robertdinterman.com/articles/usdarnass.html) article for
-a more in depth discussion of the package features.
+started](http://robertdinterman.com/usdarnass/articles/usdarnass)
+article for a more in depth discussion of the package features.
 
 # Documentation
 
