@@ -4,6 +4,12 @@
 [![Travis-CI Build
 Status](https://travis-ci.org/rdinter/usdarnass.svg?branch=master)](https://travis-ci.org/rdinter/usdarnass)
 
+[![CRAN Last
+Release](https://www.r-pkg.org/badges/version-last-release/usdarnass)](https://cran.r-project.org/package=usdarnass)
+
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/usdarnass)](https://cran.r-project.org/package=usdarnass)
+
 An alternative for downloading various USDA data from
 <https://quickstats.nass.usda.gov/> through R. You must sign up for an
 [API key](https://quickstats.nass.usda.gov/api) from the mentioned
@@ -14,17 +20,16 @@ website in order for this package to work. Disclaimer:
 
 # Install
 
-Eventually, this package will be uploaded to
-[CRAN](https://cran.r-project.org/) at which point you should be able to
-install the package through the typical method:
+Thsi package is now on [CRAN](https://cran.r-project.org/) and can be
+installed through the typical method:
 
 ``` r
 install.packages("usdarnass")
 ```
 
-However, until the package has been submitted to CRAN the only way to
-use the package is through the development version (needs devtools
-installed):
+Alternatively, the most up-to-date version of the package can be
+installed with the `devtools` package. However, beware that this will be
+a development version:
 
 ``` r
 # install.packages("devtools")

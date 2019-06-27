@@ -89,69 +89,19 @@ nass_count <- function(source_desc = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
                        token = NULL, ...){
-  match.call(expand.dots = T)
-
+  
   token <- check_key(token)
   
-  # Check to see if year used a logical operator
-  year  <- trimws(year)
-  punct <- grepl("[[:punct:]]", year)
-  if (length(punct) == 0) punct <- FALSE
-  punct_year <- as.numeric(gsub("[[:punct:]]", "", year))
+  # Pass the arguments through formatting
+  args <- do.call(args_list, as.list(match.call(expand.dots = FALSE)[-1]))
   
-  args <- list(source_desc = source_desc,
-               sector_desc = sector_desc,
-               group_desc = group_desc,
-               commodity_desc = commodity_desc,
-               short_desc = short_desc,
-               domain_desc = domain_desc,
-               domaincat_desc = domaincat_desc,
-               agg_level_desc = agg_level_desc,
-               statisticcat_desc = statisticcat_desc,
-               state_name = state_name,
-               asd_desc = asd_desc,
-               county_name = county_name,
-               region_desc = region_desc,
-               zip_5 = zip_5,
-               watershed_desc = watershed_desc,
-               freq_desc = freq_desc,
-               reference_period_desc = reference_period_desc)
-  
-  # Arguments to upper case
-  args <- lapply(args, function(x) if (!is.null(x)) toupper(x))
-  
-  # Conditional year values
-  if (!punct) {
-    args <- append(args, list(year = year))
-  } else if (punct) {
-    # __LE = <= 
-    # __LT = < 
-    # __GT = > 
-    # __GE = >= 
-    # __LIKE = like 
-    # __NOT_LIKE = not like 
-    # __NE = not equal 
-    if (grepl("^=<|^<=", year) | grepl("=>$|>=$", year)) {
-      args <- append(args, list(year__LE = punct_year))
-      }
-    if ((grepl("^<", year) | grepl(">$", year)) & !grepl("=", year)) {
-      args <- append(args, list(year__LT = punct_year))
-      }
-    if (grepl("^=>|^>=", year) | grepl("=<$|<=$", year)) {
-      args <- append(args, list(year__GE = punct_year))
-      }
-    if ((grepl("^>", year) | grepl("<$", year)) & !grepl("=", year)) {
-      args <- append(args, list(year__GT = punct_year))
-      }
-    }
   
   base_url <- paste0("http://quickstats.nass.usda.gov/api/get_counts/?key=",
                      token, "&")
-  full_url <- httr::modify_url(base_url, query = args)
-  temp     <- httr::GET(full_url)
+  temp     <- httr::GET(base_url, query = args)
   tt       <- check_response(temp)
 
-  if (names(tt) == "count"){
+  if (names(tt) == "count") {
     count_data <- as.numeric(tt[["count"]])
     } else {
       stop("Parameter entered is not valid")
