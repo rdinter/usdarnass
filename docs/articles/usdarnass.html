@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">usdarnass</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@
       <h1>Getting started with usdarnass</h1>
                         <h4 class="author">Robert Dinterman</h4>
             
-            <h4 class="date">2019-06-20</h4>
+            <h4 class="date">2019-06-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rdinter/usdarnass/blob/master/vignettes/usdarnass.Rmd"><code>vignettes/usdarnass.Rmd</code></a></small>
       <div class="hidden name"><code>usdarnass.Rmd</code></div>
@@ -258,8 +258,8 @@
 <a href="#get-count" class="anchor"></a>Get Count</h1>
 <p>Every query with <code><a href="../reference/nass_data.html">nass_data()</a></code> has a 50,000 limit of observations. In order to determine the number of observations in a query, the <code><a href="../reference/nass_count.html">nass_count()</a></code> function will accept all the same parameters as <code><a href="../reference/nass_data.html">nass_data()</a></code> but its output is a numeric of the observations in a query:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>()</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] 41612383</span></a></code></pre></div>
-<p>Here we see how many observations are currently in the Quick Stats as of 2019-06-20. Clearly, the entire data can not be downloaded with a query of their API. If you are concerned about downloading all of the Quick Stats data, then it would be more efficient to use their ftp site <a href="ftp://ftp.nass.usda.gov/quickstats/">ftp://ftp.nass.usda.gov/quickstats/</a>.</p>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] 41624761</span></a></code></pre></div>
+<p>Here we see how many observations are currently in the Quick Stats as of 2019-06-27. Clearly, the entire data can not be downloaded with a query of their API. If you are concerned about downloading all of the Quick Stats data, then it would be more efficient to use their ftp site <a href="ftp://ftp.nass.usda.gov/quickstats/">ftp://ftp.nass.usda.gov/quickstats/</a>.</p>
 <p>By way of another example, we can look at how many observations are available related to agricultural land at the county level:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">           <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>)</a>
