@@ -15,7 +15,8 @@ Imports: httr,
     jsonlite,
     methods,
     utils,
-    readr
+    readr,
+    stats
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,

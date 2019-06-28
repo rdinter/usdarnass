@@ -88,17 +88,15 @@ nass_count <- function(source_desc = NULL,
                        year = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
-                       key = NULL, ...){
-  
-  key <- check_key(key)
+                       key = check_key(), ...){
   
   # Pass the arguments through formatting
-  calls <- as.list(match.call(expand.dots = FALSE)[-1])
-  calls[["key"]] <- key
-  args <- do.call(args_list, calls)
+  calls      <- match.call(expand.dots = TRUE)
+  calls[[1]] <- as.name("args_list")
+  arguments  <- eval.parent(calls)
   
   temp     <- httr::GET("http://quickstats.nass.usda.gov/api/get_counts/",
-                        query = args)
+                        query = arguments)
   tt       <- check_response(temp)
 
   if (names(tt) == "count") {

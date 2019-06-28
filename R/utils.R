@@ -1,5 +1,25 @@
-# Argument List as defaulted null ....
+#' @title Combine API arguments for query
+#' @description Take a character vector for each argument and concatenate them
+#'   for API calls to Quick Stats. Arguments can be single objects or a vector
+#'   and are not case sensitive.
+#' @inheritParams nass_count
+#' @inheritParams nass_param
+#' @param format Output format from API call. Defaults to CSV as it is typically
+#'   the smallest sized call. Other options are JSON and XML but these are not
+#'   recommended. XML currently not supported.
+#' @return A list containing arguments for Quick Stats API call
+#' @export args_list
+#' @examples
+#'
+#' \dontrun{
+#' args_list(year = 2012,
+#' short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $",
+#' county_name = c("Durham", "WAKE"),
+#' state_name = "NORTH CAROLINA")
+#' }
+
 args_list <- function(key = NULL,
+                      param = NULL,
                       source_desc = NULL,
                       sector_desc = NULL,
                       group_desc = NULL,
@@ -18,7 +38,8 @@ args_list <- function(key = NULL,
                       year = NULL,
                       freq_desc = NULL,
                       reference_period_desc = NULL,
-                      format = NULL, ...) {
+                      format = NULL) {
+  key <- check_key(key)
   
   # Check to see if year used a logical operator
   year  <- trimws(year)
@@ -26,7 +47,8 @@ args_list <- function(key = NULL,
   if (length(punct) == 0) punct <- FALSE
   punct_year <- as.numeric(gsub("[[:punct:]]", "", year))
   
-  args <- list(key = key,
+  arguments <- list(key = key,
+               param = param,
                source_desc = source_desc,
                sector_desc = sector_desc,
                group_desc = group_desc,
@@ -47,11 +69,16 @@ args_list <- function(key = NULL,
                format = format)
   
   # Arguments to upper case
-  args <- lapply(args, function(x) if (!is.null(x)) toupper(x))
+  arguments <- lapply(arguments, function(x) if (!is.null(x)) toupper(x))
+  
+  # param needs to be lowercase
+  if (!is.null(arguments[["param"]])) {
+    arguments[["param"]] <- tolower(arguments[["param"]])
+    }
   
   # Conditional year values
   if (!punct) {
-    args <- append(args, list(year = year))
+    arguments <- append(arguments, list(year = year))
   } else if (punct) {
     # __LE = <= 
     # __LT = < 
@@ -61,24 +88,24 @@ args_list <- function(key = NULL,
     # __NOT_LIKE = not like 
     # __NE = not equal 
     if (grepl("^=<|^<=", year) | grepl("=>$|>=$", year)) {
-      args <- append(args, list(year__LE = punct_year))
+      arguments <- append(arguments, list(year__LE = punct_year))
     }
     if ((grepl("^<", year) | grepl(">$", year)) & !grepl("=", year)) {
-      args <- append(args, list(year__LT = punct_year))
+      arguments <- append(arguments, list(year__LT = punct_year))
     }
     if (grepl("^=>|^>=", year) | grepl("=<$|<=$", year)) {
-      args <- append(args, list(year__GE = punct_year))
+      arguments <- append(arguments, list(year__GE = punct_year))
     }
     if ((grepl("^>", year) | grepl("<$", year)) & !grepl("=", year)) {
-      args <- append(args, list(year__GT = punct_year))
+      arguments <- append(arguments, list(year__GT = punct_year))
     }
   }
   
   # Expand arguments if there is more than one parameter
-  arg_stack <- suppressWarnings(stack(args))
-  args      <- as.list(setNames(arg_stack$values, arg_stack$ind))
+  arg_stack <- suppressWarnings(utils::stack(arguments))
+  arguments <- as.list(stats::setNames(arg_stack$values, arg_stack$ind))
   
-  return(args)
+  return(arguments)
 }
 
 # Check if there is an API key available on the system

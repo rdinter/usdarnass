@@ -42,21 +42,17 @@ nass_param <- function(param = NULL,
                        reference_period_desc = NULL,
                        key = NULL){
   
-  key <- check_key(key)
-  
-  calls <- as.list(match.call(expand.dots = FALSE)[-1])
-  calls[["key"]] <- key
-  
   # Pass the arguments through formatting
-  args <- do.call(args_list, calls)
+  calls      <- match.call(expand.dots = TRUE)
+  calls[[1]] <- as.name("args_list")
+  arguments  <- eval.parent(calls)
   
   
   base_url <- paste0("http://quickstats.nass.usda.gov/api/get_param_values/")
-  temp_url <- httr::modify_url(base_url, query = args)
+  temp_url <- httr::modify_url(base_url, query = arguments)
 
   if (!is.null(param)) {
-    full_url <- paste0(temp_url, "&param=", tolower(param))
-    temp     <- httr::GET(full_url)
+    temp     <- httr::GET(temp_url)
     tt       <- check_response(temp)
 
     if (names(tt) == param) {

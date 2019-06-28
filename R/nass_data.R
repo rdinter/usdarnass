@@ -51,7 +51,7 @@ nass_data <- function(source_desc = NULL,
   if (format == "XML") stop("XML not supported yet.")
   
   # First check that this call will even fit into the count limit
-  count <- do.call(nass_count, as.list(match.call(expand.dots = FALSE)[-1]))
+  count <- do.call(nass_count, as.list(match.call(expand.dots = TRUE)[-1]))
   
   if (count > 50000) stop(paste0("Query returns ",
                                  prettyNum(count, big.mark = ","),
@@ -59,15 +59,12 @@ nass_data <- function(source_desc = NULL,
                                  "query to fit within limit. See nass_count()"))
   
   # Now, normal procedure.
-  key <- check_key(key)
-  
-  # Pass the arguments through formatting
-  calls <- as.list(match.call(expand.dots = FALSE)[-1])
-  calls[["key"]] <- key
-  args <- do.call(args_list, calls)
+  calls      <- match.call(expand.dots = TRUE)
+  calls[[1]] <- as.name("args_list")
+  arguments  <- eval.parent(calls)
   
   temp     <- httr::GET("http://quickstats.nass.usda.gov/api/api_GET",
-                        query = args)
+                        query = arguments)
   tt       <- check_response(temp)
   
   
