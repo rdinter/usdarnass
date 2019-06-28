@@ -4,8 +4,7 @@
 [![Travis-CI Build
 Status](https://travis-ci.org/rdinter/usdarnass.svg?branch=master)](https://travis-ci.org/rdinter/usdarnass)
 
-[![CRAN Last
-Release](https://www.r-pkg.org/badges/version-last-release/usdarnass)](https://cran.r-project.org/package=usdarnass)
+[![CRAN Last Release](https://www.r-pkg.org/badges/version-last-release/usdarnass)](https://cran.r-project.org/package=usdarnass)
 
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/usdarnass)](https://cran.r-project.org/package=usdarnass)
