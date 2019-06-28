@@ -52,7 +52,7 @@
 #'   month. "POINT IN TIME" is as of a particular day.
 #' @param reference_period_desc "Period" - The specific time frame, within a
 #'   freq_desc.
-#' @param token API key, default is to use the value stored in \code{.Renviron}
+#' @param key API key, default is to use the value stored in \code{.Renviron}
 #'   which is stored from the \code{\link{nass_set_key}} function. If there is
 #'   no API key stored in the environment, a character string can be provided.
 #' @param \\dots Not used.
@@ -88,17 +88,17 @@ nass_count <- function(source_desc = NULL,
                        year = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
-                       token = NULL, ...){
+                       key = NULL, ...){
   
-  token <- check_key(token)
+  key <- check_key(key)
   
   # Pass the arguments through formatting
-  args <- do.call(args_list, as.list(match.call(expand.dots = FALSE)[-1]))
+  calls <- as.list(match.call(expand.dots = FALSE)[-1])
+  calls[["key"]] <- key
+  args <- do.call(args_list, calls)
   
-  
-  base_url <- paste0("http://quickstats.nass.usda.gov/api/get_counts/?key=",
-                     token, "&")
-  temp     <- httr::GET(base_url, query = args)
+  temp     <- httr::GET("http://quickstats.nass.usda.gov/api/get_counts/",
+                        query = args)
   tt       <- check_response(temp)
 
   if (names(tt) == "count") {

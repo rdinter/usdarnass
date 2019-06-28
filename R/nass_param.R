@@ -40,16 +40,18 @@ nass_param <- function(param = NULL,
                        year = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
-                       token = NULL){
+                       key = NULL){
   
-  token <- check_key(token)
+  key <- check_key(key)
+  
+  calls <- as.list(match.call(expand.dots = FALSE)[-1])
+  calls[["key"]] <- key
   
   # Pass the arguments through formatting
-  args <- do.call(args_list, as.list(match.call(expand.dots = FALSE)[-1]))
+  args <- do.call(args_list, calls)
   
   
-  base_url <- paste0("http://quickstats.nass.usda.gov/api/get_param_values/",
-                     "?key=", token, "&")
+  base_url <- paste0("http://quickstats.nass.usda.gov/api/get_param_values/")
   temp_url <- httr::modify_url(base_url, query = args)
 
   if (!is.null(param)) {

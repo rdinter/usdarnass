@@ -1,5 +1,6 @@
 # Argument List as defaulted null ....
-args_list <- function(source_desc = NULL,
+args_list <- function(key = NULL,
+                      source_desc = NULL,
                       sector_desc = NULL,
                       group_desc = NULL,
                       commodity_desc = NULL,
@@ -25,7 +26,8 @@ args_list <- function(source_desc = NULL,
   if (length(punct) == 0) punct <- FALSE
   punct_year <- as.numeric(gsub("[[:punct:]]", "", year))
   
-  args <- list(source_desc = source_desc,
+  args <- list(key = key,
+               source_desc = source_desc,
                sector_desc = sector_desc,
                group_desc = group_desc,
                commodity_desc = commodity_desc,
@@ -79,7 +81,7 @@ args_list <- function(source_desc = NULL,
   return(args)
 }
 
-# Check if there is an API token available on the system
+# Check if there is an API key available on the system
 check_key <- function(x){
   tmp <- if (is.null(x)) Sys.getenv("NASS_KEY") else x
   if (tmp == "") {

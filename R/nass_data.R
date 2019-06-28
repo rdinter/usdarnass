@@ -44,29 +44,32 @@ nass_data <- function(source_desc = NULL,
                       year = NULL,
                       freq_desc = NULL,
                       reference_period_desc = NULL,
-                      token = NULL,
+                      key = NULL,
                       format = c("CSV", "JSON", "XML"),
                       numeric_vals = FALSE){
   format = match.arg(format)
   if (format == "XML") stop("XML not supported yet.")
   
-  token <- check_key(token)
-  
-  # Pass the arguments through formatting
-  args <- do.call(args_list, as.list(match.call(expand.dots = FALSE)[-1]))
-  
-  
-  count <- do.call(nass_count, args)
+  # First check that this call will even fit into the count limit
+  count <- do.call(nass_count, as.list(match.call(expand.dots = FALSE)[-1]))
   
   if (count > 50000) stop(paste0("Query returns ",
                                  prettyNum(count, big.mark = ","),
                                  " records. The limit is 50,000. Subset the ",
                                  "query to fit within limit. See nass_count()"))
   
-  base_url <- paste0("http://quickstats.nass.usda.gov/api/api_GET/?key=",
-                     token, "&")
-  temp     <- httr::GET(base_url, query = args)
+  # Now, normal procedure.
+  key <- check_key(key)
+  
+  # Pass the arguments through formatting
+  calls <- as.list(match.call(expand.dots = FALSE)[-1])
+  calls[["key"]] <- key
+  args <- do.call(args_list, calls)
+  
+  temp     <- httr::GET("http://quickstats.nass.usda.gov/api/api_GET",
+                        query = args)
   tt       <- check_response(temp)
+  
   
   if (methods::is(tt, "data.frame")) {
     nass <- tt
