@@ -10,7 +10,7 @@ nass_count(source_desc = NULL, sector_desc = NULL, group_desc = NULL,
   statisticcat_desc = NULL, state_name = NULL, asd_desc = NULL,
   county_name = NULL, region_desc = NULL, zip_5 = NULL,
   watershed_desc = NULL, year = NULL, freq_desc = NULL,
-  reference_period_desc = NULL, token = NULL, ...)
+  reference_period_desc = NULL, key = check_key(), ...)
 }
 \arguments{
 \item{source_desc}{"Program" - Source of data ("CENSUS" or "SURVEY"). Census
@@ -80,7 +80,7 @@ month. "POINT IN TIME" is as of a particular day.}
 \item{reference_period_desc}{"Period" - The specific time frame, within a
 freq_desc.}
 
-\item{token}{API key, default is to use the value stored in \code{.Renviron}
+\item{key}{API key, default is to use the value stored in \code{.Renviron}
 which is stored from the \code{\link{nass_set_key}} function. If there is
 no API key stored in the environment, a character string can be provided.}
 

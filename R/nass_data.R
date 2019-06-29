@@ -51,7 +51,10 @@ nass_data <- function(source_desc = NULL,
   if (format == "XML") stop("XML not supported yet.")
   
   # First check that this call will even fit into the count limit
-  count <- do.call(nass_count, as.list(match.call(expand.dots = TRUE)[-1]))
+  calls_count      <- match.call(expand.dots = TRUE)
+  calls_count[[1]] <- as.name("nass_count")
+  count            <- eval.parent(calls_count)
+  # count <- do.call(nass_count, as.list(match.call(expand.dots = TRUE)[-1]))
   
   if (count > 50000) stop(paste0("Query returns ",
                                  prettyNum(count, big.mark = ","),

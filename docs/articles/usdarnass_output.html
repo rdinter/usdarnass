@@ -92,7 +92,7 @@
       <h1>Output of usdarnass</h1>
                         <h4 class="author">Robert Dinterman</h4>
             
-            <h4 class="date">2019-06-27</h4>
+            <h4 class="date">2019-06-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rdinter/usdarnass/blob/master/vignettes/usdarnass_output.Rmd"><code>vignettes/usdarnass_output.Rmd</code></a></small>
       <div class="hidden name"><code>usdarnass_output.Rmd</code></div>
@@ -199,60 +199,64 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"usdarnass"</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"dplyr"</span>) <span class="co"># Helpful package</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">ohio_rent &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nass_data.html">nass_data</a></span>(<span class="dt">commodity_desc =</span> <span class="st">"RENT"</span>, <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>,</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">                       <span class="dt">state_name =</span> <span class="st">"OHIO"</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(ohio_rent)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; Observations: 2,006</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; Variables: 39</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; $ source_desc           &lt;chr&gt; "CENSUS", "CENSUS", "CENSUS", "CENSUS", "C…</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; $ sector_desc           &lt;chr&gt; "ECONOMICS", "ECONOMICS", "ECONOMICS", "EC…</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; $ group_desc            &lt;chr&gt; "EXPENSES", "EXPENSES", "EXPENSES", "EXPEN…</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; $ commodity_desc        &lt;chr&gt; "RENT", "RENT", "RENT", "RENT", "RENT", "R…</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; $ class_desc            &lt;chr&gt; "CASH, LAND &amp; BUILDINGS", "CASH, LAND &amp; BU…</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; $ prodn_practice_desc   &lt;chr&gt; "ALL PRODUCTION PRACTICES", "ALL PRODUCTIO…</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; $ util_practice_desc    &lt;chr&gt; "ALL UTILIZATION PRACTICES", "ALL UTILIZAT…</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; $ statisticcat_desc     &lt;chr&gt; "EXPENSE", "EXPENSE", "EXPENSE", "EXPENSE"…</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; $ unit_desc             &lt;chr&gt; "$", "$", "$", "$", "$", "$", "$", "$", "$…</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; $ short_desc            &lt;chr&gt; "RENT, CASH, LAND &amp; BUILDINGS - EXPENSE, M…</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; $ domain_desc           &lt;chr&gt; "TOTAL", "TOTAL", "TOTAL", "TOTAL", "TOTAL…</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; $ domaincat_desc        &lt;chr&gt; "NOT SPECIFIED", "NOT SPECIFIED", "NOT SPE…</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; $ agg_level_desc        &lt;chr&gt; "COUNTY", "COUNTY", "COUNTY", "COUNTY", "C…</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; $ state_ansi            &lt;chr&gt; "39", "39", "39", "39", "39", "39", "39", …</span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; $ state_fips_code       &lt;chr&gt; "39", "39", "39", "39", "39", "39", "39", …</span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt; $ state_alpha           &lt;chr&gt; "OH", "OH", "OH", "OH", "OH", "OH", "OH", …</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt; $ state_name            &lt;chr&gt; "OHIO", "OHIO", "OHIO", "OHIO", "OHIO", "O…</span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt; $ asd_code              &lt;chr&gt; "10", "10", "10", "10", "10", "10", "10", …</span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt; $ asd_desc              &lt;chr&gt; "NORTHWEST", "NORTHWEST", "NORTHWEST", "NO…</span></a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt; $ county_ansi           &lt;chr&gt; "003", "003", "003", "003", "003", "039", …</span></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co">#&gt; $ county_code           &lt;chr&gt; "003", "003", "003", "003", "003", "039", …</span></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co">#&gt; $ county_name           &lt;chr&gt; "ALLEN", "ALLEN", "ALLEN", "ALLEN", "ALLEN…</span></a>
-<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co">#&gt; $ region_desc           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></a>
-<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co">#&gt; $ zip_5                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></a>
-<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co">#&gt; $ watershed_code        &lt;chr&gt; "00000000", "00000000", "00000000", "00000…</span></a>
-<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="co">#&gt; $ watershed_desc        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></a>
-<a class="sourceLine" id="cb1-35" data-line-number="35"><span class="co">#&gt; $ congr_district_code   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></a>
-<a class="sourceLine" id="cb1-36" data-line-number="36"><span class="co">#&gt; $ country_code          &lt;chr&gt; "9000", "9000", "9000", "9000", "9000", "9…</span></a>
-<a class="sourceLine" id="cb1-37" data-line-number="37"><span class="co">#&gt; $ country_name          &lt;chr&gt; "UNITED STATES", "UNITED STATES", "UNITED …</span></a>
-<a class="sourceLine" id="cb1-38" data-line-number="38"><span class="co">#&gt; $ location_desc         &lt;chr&gt; "OHIO, NORTHWEST, ALLEN", "OHIO, NORTHWEST…</span></a>
-<a class="sourceLine" id="cb1-39" data-line-number="39"><span class="co">#&gt; $ year                  &lt;chr&gt; "2017", "2012", "2007", "2002", "1997", "2…</span></a>
-<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="co">#&gt; $ freq_desc             &lt;chr&gt; "ANNUAL", "ANNUAL", "ANNUAL", "ANNUAL", "A…</span></a>
-<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="co">#&gt; $ begin_code            &lt;chr&gt; "00", "00", "00", "00", "00", "00", "00", …</span></a>
-<a class="sourceLine" id="cb1-42" data-line-number="42"><span class="co">#&gt; $ end_code              &lt;chr&gt; "00", "00", "00", "00", "00", "00", "00", …</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">ohio_rent &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nass_data.html">nass_data</a></span>(<span class="dt">commodity_desc =</span> <span class="st">"RENT"</span>,</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">                       <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>,</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">                       <span class="dt">state_name =</span> <span class="st">"OHIO"</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(ohio_rent)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; Observations: 2,006</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; Variables: 39</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; $ week_ending           &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", ""…</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; $ county_ansi           &lt;chr&gt; "003", "003", "003", "003", "003", "039", …</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; $ class_desc            &lt;chr&gt; "CASH, LAND &amp; BUILDINGS", "CASH, LAND &amp; BU…</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; $ county_code           &lt;chr&gt; "003", "003", "003", "003", "003", "039", …</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; $ state_name            &lt;chr&gt; "OHIO", "OHIO", "OHIO", "OHIO", "OHIO", "O…</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; $ `CV (%)`              &lt;chr&gt; "18.4", "9.6", "", "", "", "18.4", "9.6", …</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; $ state_ansi            &lt;chr&gt; "39", "39", "39", "39", "39", "39", "39", …</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; $ state_alpha           &lt;chr&gt; "OH", "OH", "OH", "OH", "OH", "OH", "OH", …</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; $ location_desc         &lt;chr&gt; "OHIO, NORTHWEST, ALLEN", "OHIO, NORTHWEST…</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; $ Value                 &lt;chr&gt; "10,693,000", "11,067,000", "7,001,000", "…</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; $ load_time             &lt;chr&gt; "2018-02-01 00:00:00", "2012-12-31 00:00:0…</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; $ congr_district_code   &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", ""…</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; $ asd_code              &lt;chr&gt; "10", "10", "10", "10", "10", "10", "10", …</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; $ group_desc            &lt;chr&gt; "EXPENSES", "EXPENSES", "EXPENSES", "EXPEN…</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt; $ sector_desc           &lt;chr&gt; "ECONOMICS", "ECONOMICS", "ECONOMICS", "EC…</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt; $ asd_desc              &lt;chr&gt; "NORTHWEST", "NORTHWEST", "NORTHWEST", "NO…</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt; $ watershed_code        &lt;chr&gt; "00000000", "00000000", "00000000", "00000…</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt; $ statisticcat_desc     &lt;chr&gt; "EXPENSE", "EXPENSE", "EXPENSE", "EXPENSE"…</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt; $ commodity_desc        &lt;chr&gt; "RENT", "RENT", "RENT", "RENT", "RENT", "R…</span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co">#&gt; $ state_fips_code       &lt;chr&gt; "39", "39", "39", "39", "39", "39", "39", …</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co">#&gt; $ util_practice_desc    &lt;chr&gt; "ALL UTILIZATION PRACTICES", "ALL UTILIZAT…</span></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co">#&gt; $ domain_desc           &lt;chr&gt; "TOTAL", "TOTAL", "TOTAL", "TOTAL", "TOTAL…</span></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co">#&gt; $ county_name           &lt;chr&gt; "ALLEN", "ALLEN", "ALLEN", "ALLEN", "ALLEN…</span></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co">#&gt; $ end_code              &lt;chr&gt; "00", "00", "00", "00", "00", "00", "00", …</span></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="co">#&gt; $ begin_code            &lt;chr&gt; "00", "00", "00", "00", "00", "00", "00", …</span></a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"><span class="co">#&gt; $ year                  &lt;int&gt; 2017, 2012, 2007, 2002, 1997, 2017, 2012, …</span></a>
+<a class="sourceLine" id="cb1-36" data-line-number="36"><span class="co">#&gt; $ short_desc            &lt;chr&gt; "RENT, CASH, LAND &amp; BUILDINGS - EXPENSE, M…</span></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37"><span class="co">#&gt; $ country_code          &lt;chr&gt; "9000", "9000", "9000", "9000", "9000", "9…</span></a>
+<a class="sourceLine" id="cb1-38" data-line-number="38"><span class="co">#&gt; $ domaincat_desc        &lt;chr&gt; "NOT SPECIFIED", "NOT SPECIFIED", "NOT SPE…</span></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"><span class="co">#&gt; $ unit_desc             &lt;chr&gt; "$", "$", "$", "$", "$", "$", "$", "$", "$…</span></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="co">#&gt; $ zip_5                 &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", ""…</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="co">#&gt; $ freq_desc             &lt;chr&gt; "ANNUAL", "ANNUAL", "ANNUAL", "ANNUAL", "A…</span></a>
+<a class="sourceLine" id="cb1-42" data-line-number="42"><span class="co">#&gt; $ source_desc           &lt;chr&gt; "CENSUS", "CENSUS", "CENSUS", "CENSUS", "C…</span></a>
 <a class="sourceLine" id="cb1-43" data-line-number="43"><span class="co">#&gt; $ reference_period_desc &lt;chr&gt; "YEAR", "YEAR", "YEAR", "YEAR", "YEAR", "Y…</span></a>
-<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="co">#&gt; $ week_ending           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></a>
-<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="co">#&gt; $ load_time             &lt;chr&gt; "2018-02-01 00:00:00", "2012-12-31 00:00:0…</span></a>
-<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="co">#&gt; $ Value                 &lt;chr&gt; "10,693,000", "11,067,000", "7,001,000", "…</span></a>
-<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="co">#&gt; $ `CV (%)`              &lt;chr&gt; "18.4", "9.6", NA, NA, NA, "18.4", "9.6", …</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="co">#&gt; $ country_name          &lt;chr&gt; "UNITED STATES", "UNITED STATES", "UNITED …</span></a>
+<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="co">#&gt; $ prodn_practice_desc   &lt;chr&gt; "ALL PRODUCTION PRACTICES", "ALL PRODUCTIO…</span></a>
+<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="co">#&gt; $ region_desc           &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", ""…</span></a>
+<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="co">#&gt; $ agg_level_desc        &lt;chr&gt; "COUNTY", "COUNTY", "COUNTY", "COUNTY", "C…</span></a>
+<a class="sourceLine" id="cb1-48" data-line-number="48"><span class="co">#&gt; $ watershed_desc        &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", ""…</span></a></code></pre></div>
 <p>The <code>agg_level_desc</code>, <code>commodity_desc</code>, and <code>state_name</code> variables are all the same because the query parameters were set on those values. It turns out a few other variables will be identical for the whole data.frame because they do not vary based on county level observations in Ohio: <code>country_code</code>, <code>state_alpha</code>, <code>state_ansi</code>, and <code>state_fips_code</code>.</p>
 <p>There are a fair amount of other variables which are all the same for the entire data.frame, but these variables are not the same because of the regional aggregation variables but because we have subset the data by the <code>commodity_desc</code> as “RENT”.</p>
 <p>The various other parameters that we could have set in this query of interest are from the <code>short_desc</code> parameter, which we could use the <code><a href="../reference/nass_param.html">nass_param()</a></code> function to view the options for this data item:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/nass_param.html">nass_param</a></span>(<span class="st">"short_desc"</span>, <span class="dt">commodity_desc =</span> <span class="st">"RENT"</span>, <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>, <span class="dt">state_name =</span> <span class="st">"OHIO"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [1] "RENT, CASH, CROPLAND, IRRIGATED - EXPENSE, MEASURED IN $ / ACRE"    </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; [2] "RENT, CASH, CROPLAND, NON-IRRIGATED - EXPENSE, MEASURED IN $ / ACRE"</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; [3] "RENT, CASH, LAND &amp; BUILDINGS - EXPENSE, MEASURED IN $"              </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; [4] "RENT, CASH, LAND &amp; BUILDINGS - OPERATIONS WITH EXPENSE"             </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [5] "RENT, CASH, PASTURELAND - EXPENSE, MEASURED IN $ / ACRE"            </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [6] "RENT, PER HEAD OR ANIMAL UNIT MONTH - OPERATIONS WITH EXPENSE"</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/nass_param.html">nass_param</a></span>(<span class="st">"short_desc"</span>,</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">           <span class="dt">commodity_desc =</span> <span class="st">"RENT"</span>,</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">           <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>,</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">           <span class="dt">state_name =</span> <span class="st">"OHIO"</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; [1] "RENT, CASH, CROPLAND, IRRIGATED - EXPENSE, MEASURED IN $ / ACRE"    </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [2] "RENT, CASH, CROPLAND, NON-IRRIGATED - EXPENSE, MEASURED IN $ / ACRE"</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [3] "RENT, CASH, LAND &amp; BUILDINGS - EXPENSE, MEASURED IN $"              </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [4] "RENT, CASH, LAND &amp; BUILDINGS - OPERATIONS WITH EXPENSE"             </span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [5] "RENT, CASH, PASTURELAND - EXPENSE, MEASURED IN $ / ACRE"            </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [6] "RENT, PER HEAD OR ANIMAL UNIT MONTH - OPERATIONS WITH EXPENSE"</span></a></code></pre></div>
 <p>Alternatively, in the previously returned query with the <code><a href="../reference/nass_data.html">nass_data()</a></code> function, we could view the frequency of the different <code>short_desc</code> variables to get to the same outcome but with the additional benefit of knowing the number of observations:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(ohio_rent<span class="op">$</span>short_desc)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; </span></a>
@@ -378,39 +382,49 @@
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;  2  2  8  2  3  8  4  7</span></a></code></pre></div>
 <p>There are nine reporting districts in Ohio and eight of the nine have observations which combine counties for an observation – which implies some counties are missing official observations for the statistics in question. It is not necessarily the case that the counties are completely missing but they are suppressed. One method for correcting for these missing values is to replace the missing counties with the “OTHER (COMBINED) COUNTIES” category for average rent.</p>
 <p>In order to do this, we first need a full set of all of the counties in Ohio along with their corresponding agricultural district number. There are many ways to accomplish this, but I will go about this by leveraging the 2012 Agricultural Census data which is in Quick Stats and contains a category for the number of farms in each Ohio county. The number of farms is not helpful for our data concerns but it does serve as a way to return a data.frame with 88 observations in Ohio with each uniquely corresponding to a county in Ohio.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">farms &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nass_data.html">nass_data</a></span>(<span class="dt">source_desc =</span> <span class="st">"CENSUS"</span>, <span class="dt">year =</span> <span class="dv">2012</span>, <span class="dt">state_name =</span> <span class="st">"OHIO"</span>, <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>, <span class="dt">domain_desc =</span> <span class="st">"TOTAL"</span>, <span class="dt">short_desc =</span> <span class="st">"FARM OPERATIONS - NUMBER OF OPERATIONS"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">farms &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nass_data.html">nass_data</a></span>(<span class="dt">source_desc =</span> <span class="st">"CENSUS"</span>,</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">                   <span class="dt">year =</span> <span class="dv">2012</span>,</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">                   <span class="dt">state_name =</span> <span class="st">"OHIO"</span>,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">                   <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">                   <span class="dt">domain_desc =</span> <span class="st">"TOTAL"</span>,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">                   <span class="dt">short_desc =</span> <span class="st">"FARM OPERATIONS - NUMBER OF OPERATIONS"</span>)</a></code></pre></div>
 <p>At this point, we want to make sure that each year for our non_irrigated rent data has all 88 counties with an NA value if it does not exist. Then, we want to impute the “OTHER (COMBINED) COUNTIES” category for all of the NAs. To do this we will create the backbone of our desired observations from the farms and then fully merge this with the current data from Quick Stats. The resulting data.frame will have missing “Value” observations for the counties which do not have observations and we will impute the value from “OTHER (COMBINED) COUNTIES”. And last of all, with these data the only important aspect of these observations is that we have a county identifier, locational aspects, and the year in question. Much of the rest of the variables in the dataset are not of importance to us so we will have only keep the remaining important variables and convert them to numeric.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"tidyr"</span>)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">base_rent &lt;-<span class="st"> </span>farms <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(state_fips_code, county_code, county_name, asd_code, asd_desc) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/expand.html">expand</a></span>(<span class="dt">year =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(non_irrigated<span class="op">$</span>year), <span class="kw"><a href="https://tidyr.tidyverse.org/reference/expand.html">nesting</a></span>(state_fips_code, county_code, county_name, asd_code)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">full_join</a></span>(non_irrigated)</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Joining, by = c("year", "state_fips_code", "county_code", "county_name", "asd_code")</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co"># Correct for missing values in the "other"</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">base_rent &lt;-<span class="st"> </span>base_rent <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(year, asd_code, county_code) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(year, asd_code) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">Value =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(Value), Value[county_code <span class="op">==</span><span class="st"> "998"</span>], Value)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(county_code <span class="op">!=</span><span class="st"> "998"</span>)</a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co"># Finally, select only the relevant variables are rename</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16">base_rent &lt;-<span class="st"> </span>base_rent <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(year, state_fips_code, county_code, county_name, asd_code, <span class="dt">rent =</span> Value) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">rent =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(rent),</a>
-<a class="sourceLine" id="cb8-19" data-line-number="19">         <span class="dt">fips =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(state_fips_code, county_code)))</a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(base_rent)</a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; Observations: 792</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; Variables: 7</span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt; Groups: year, asd_code [81]</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt; $ year            &lt;chr&gt; "2008", "2008", "2008", "2008", "2008", "2008", …</span></a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; $ state_fips_code &lt;chr&gt; "39", "39", "39", "39", "39", "39", "39", "39", …</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; $ county_code     &lt;chr&gt; "003", "039", "051", "063", "069", "095", "125",…</span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; $ county_name     &lt;chr&gt; "ALLEN", "DEFIANCE", "FULTON", "HANCOCK", "HENRY…</span></a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; $ asd_code        &lt;chr&gt; "10", "10", "10", "10", "10", "10", "10", "10", …</span></a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; $ rent            &lt;dbl&gt; 125.0, 99.0, 129.0, 104.0, 127.0, 116.0, 105.0, …</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; $ fips            &lt;dbl&gt; 39003, 39039, 39051, 39063, 39069, 39095, 39125,…</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(state_fips_code, county_code, county_name,</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">         asd_code, asd_desc) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/expand.html">expand</a></span>(<span class="dt">year =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(non_irrigated<span class="op">$</span>year),</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">         <span class="kw"><a href="https://tidyr.tidyverse.org/reference/expand.html">nesting</a></span>(state_fips_code, county_code, county_name, asd_code)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">full_join</a></span>(non_irrigated)</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; Joining, by = c("year", "state_fips_code", "county_code", "county_name", "asd_code")</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co"># Correct for missing values in the "other"</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">base_rent &lt;-<span class="st"> </span>base_rent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(year, asd_code, county_code) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(year, asd_code) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">Value =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(Value),</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">                        Value[county_code <span class="op">==</span><span class="st"> "998"</span>],</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">                        Value)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(county_code <span class="op">!=</span><span class="st"> "998"</span>)</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co"># Finally, select only the relevant variables are rename</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20">base_rent &lt;-<span class="st"> </span>base_rent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(year, state_fips_code, county_code,</a>
+<a class="sourceLine" id="cb8-22" data-line-number="22">         county_name, asd_code, <span class="dt">rent =</span> Value) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">rent =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(rent),</a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">         <span class="dt">fips =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(state_fips_code, county_code)))</a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(base_rent)</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; Observations: 792</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; Variables: 7</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; Groups: year, asd_code [81]</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; $ year            &lt;int&gt; 2008, 2008, 2008, 2008, 2008, 2008, 2008, 2008, …</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; $ state_fips_code &lt;chr&gt; "39", "39", "39", "39", "39", "39", "39", "39", …</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; $ county_code     &lt;chr&gt; "003", "039", "051", "063", "069", "095", "125",…</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; $ county_name     &lt;chr&gt; "ALLEN", "DEFIANCE", "FULTON", "HANCOCK", "HENRY…</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; $ asd_code        &lt;chr&gt; "10", "10", "10", "10", "10", "10", "10", "10", …</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; $ rent            &lt;dbl&gt; 125.0, 99.0, 129.0, 104.0, 127.0, 116.0, 105.0, …</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; $ fips            &lt;dbl&gt; 39003, 39039, 39051, 39063, 39069, 39095, 39125,…</span></a></code></pre></div>
 </div>
 </div>
   </div>

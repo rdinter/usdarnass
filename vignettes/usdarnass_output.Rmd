@@ -76,7 +76,8 @@ We can set a query where we return all data at the county level in Ohio related 
 library("usdarnass")
 library("dplyr") # Helpful package
 
-ohio_rent <- nass_data(commodity_desc = "RENT", agg_level_desc = "COUNTY",
+ohio_rent <- nass_data(commodity_desc = "RENT",
+                       agg_level_desc = "COUNTY",
                        state_name = "OHIO")
 glimpse(ohio_rent)
 ```
@@ -88,7 +89,10 @@ There are a fair amount of other variables which are all the same for the entire
 The various other parameters that we could have set in this query of interest are from the `short_desc` parameter, which we could use the `nass_param()` function to view the options for this data item:
 
 ```{r rent_nass_param}
-nass_param("short_desc", commodity_desc = "RENT", agg_level_desc = "COUNTY", state_name = "OHIO")
+nass_param("short_desc",
+           commodity_desc = "RENT",
+           agg_level_desc = "COUNTY",
+           state_name = "OHIO")
 ```
 
 Alternatively, in the previously returned query with the `nass_data()` function, we could view the frequency of the different `short_desc` variables to get to the same outcome but with the additional benefit of knowing the number of observations:
@@ -128,7 +132,12 @@ There are nine reporting districts in Ohio and eight of the nine have observatio
 In order to do this, we first need a full set of all of the counties in Ohio along with their corresponding agricultural district number. There are many ways to accomplish this, but I will go about this by leveraging the 2012 Agricultural Census data which is in Quick Stats and contains a category for the number of farms in each Ohio county. The number of farms is not helpful for our data concerns but it does serve as a way to return a data.frame with 88 observations in Ohio with each uniquely corresponding to a county in Ohio.
 
 ```{r ag_census}
-farms <- nass_data(source_desc = "CENSUS", year = 2012, state_name = "OHIO", agg_level_desc = "COUNTY", domain_desc = "TOTAL", short_desc = "FARM OPERATIONS - NUMBER OF OPERATIONS")
+farms <- nass_data(source_desc = "CENSUS",
+                   year = 2012,
+                   state_name = "OHIO",
+                   agg_level_desc = "COUNTY",
+                   domain_desc = "TOTAL",
+                   short_desc = "FARM OPERATIONS - NUMBER OF OPERATIONS")
 ```
 
 At this point, we want to make sure that each year for our non_irrigated rent data has all 88 counties with an NA value if it does not exist. Then, we want to impute the "OTHER (COMBINED) COUNTIES" category for all of the NAs. To do this we will create the backbone of our desired observations from the farms and then fully merge this with the current data from Quick Stats. The resulting data.frame will have missing "Value" observations for the counties which do not have observations and we will impute the value from "OTHER (COMBINED) COUNTIES". And last of all, with these data the only important aspect of these observations is that we have a county identifier, locational aspects, and the year in question. Much of the rest of the variables in the dataset are not of importance to us so we will have only keep the remaining important variables and convert them to numeric.
@@ -136,20 +145,25 @@ At this point, we want to make sure that each year for our non_irrigated rent da
 ```{r combined}
 library("tidyr")
 base_rent <- farms %>% 
-  select(state_fips_code, county_code, county_name, asd_code, asd_desc) %>% 
-  expand(year = unique(non_irrigated$year), nesting(state_fips_code, county_code, county_name, asd_code)) %>% 
+  select(state_fips_code, county_code, county_name,
+         asd_code, asd_desc) %>% 
+  expand(year = unique(non_irrigated$year),
+         nesting(state_fips_code, county_code, county_name, asd_code)) %>% 
   full_join(non_irrigated)
 
 # Correct for missing values in the "other"
 base_rent <- base_rent %>% 
   arrange(year, asd_code, county_code) %>% 
   group_by(year, asd_code) %>% 
-  mutate(Value = ifelse(is.na(Value), Value[county_code == "998"], Value)) %>% 
+  mutate(Value = ifelse(is.na(Value),
+                        Value[county_code == "998"],
+                        Value)) %>% 
   filter(county_code != "998")
 
 # Finally, select only the relevant variables are rename
 base_rent <- base_rent %>% 
-  select(year, state_fips_code, county_code, county_name, asd_code, rent = Value) %>% 
+  select(year, state_fips_code, county_code,
+         county_name, asd_code, rent = Value) %>% 
   mutate(rent = as.numeric(rent),
          fips = as.numeric(paste0(state_fips_code, county_code)))
 

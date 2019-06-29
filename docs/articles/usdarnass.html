@@ -92,7 +92,7 @@
       <h1>Getting started with usdarnass</h1>
                         <h4 class="author">Robert Dinterman</h4>
             
-            <h4 class="date">2019-06-27</h4>
+            <h4 class="date">2019-06-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rdinter/usdarnass/blob/master/vignettes/usdarnass.Rmd"><code>vignettes/usdarnass.Rmd</code></a></small>
       <div class="hidden name"><code>usdarnass.Rmd</code></div>
@@ -109,7 +109,7 @@
 <blockquote>
 <p>Quick Stats is the National Agricultural Statistics Service’s (NASS) online, self-service tool to access complete results from the 1997, 2002, 2007, and 2012 Censuses of Agriculture as well as the best source of NASS survey published estimates. The census collects data on all commodities produced on U.S. farms and ranches, as well as detailed information on expenses, income, and operator characteristics. The surveys that NASS conducts collect information on virtually every facet of U.S. agricultural production.</p>
 </blockquote>
-<p>There are two main USDA sources within Quick Stats: censuses and surveys. The census values in Quick Stats start in 1997 while the survey values can range all the way back to 1850 and then annually since 1866. Although Agricultural Censuses occur once every 5 years (1997, 2002, 2007, 2012, and eventually 2017), USDA will administer other censuses which explains the extra years available. At this time, there is no support for documenting the various kinds of data which can be extracted from Quick Stats and this package only serves as an R interface for downloading Quick Stats data and it is up to the user to understand the source of the data they download.</p>
+<p>There are two main USDA sources within Quick Stats: censuses and surveys. The census values in Quick Stats start in 1997 while the survey values can range all the way back to 1850 and then annually since 1866. Although Agricultural Censuses occur once every 5 years (1997, 2002, 2007, 2012, and most recently 2017), USDA will administer other censuses, for instance the <a href="https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Census_of_Aquaculture/">Census of Aquaculture</a>, which explains the additional years of available census data. At this time, there is no support for documenting the various kinds of data which can be extracted from Quick Stats and this package only serves as an R interface for downloading Quick Stats data. It is up to the user to understand the source of the data they download, most of which can be found at <a href="https://www.nass.usda.gov/Surveys/">https://www.nass.usda.gov/Surveys/</a>.</p>
 <!-- The core functions are -->
 <!-- - `nass_set_key()` - set the required USDA Quickstats API key for the session. -->
 <!-- - `nass_param()` - extract all of the valid values for a particular parameter. -->
@@ -119,7 +119,7 @@
 <div id="package-install" class="section level1">
 <h1 class="hasAnchor">
 <a href="#package-install" class="anchor"></a>Package Install</h1>
-<p>Development version (needs devtools installed):</p>
+<p><code>usdarnass</code> is currently on CRAN and can be installed with the typical method of using <code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("usdarnass")</a></code> in R. However, if you would like the development version then it can be installed with the use of <code>devtools</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"rdinter/usdarnass"</span>)</a></code></pre></div>
 <p>Load package:</p>
@@ -142,49 +142,57 @@
 <div id="key-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#key-install" class="anchor"></a>Key Install</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/nass_set_key.html">nass_set_key</a></span>(<span class="st">"YOUR_KEY_IN_QUOTATIONS"</span>)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/nass_set_key.html">nass_set_key</a></span>(<span class="st">"YOUR_KEY_IN_QUOTATIONS"</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># First time, reload your enviornment so you can use the key without restarting R.</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRenviron">readRenviron</a></span>(<span class="st">"~/.Renviron"</span>)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># You can check it with:</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getenv">Sys.getenv</a></span>(<span class="st">"NASS_KEY"</span>)</a></code></pre></div>
-<p>The above script will add a line to your <code>.Renviron</code> file to be re-used whenever you are using the package. If you are not comfortable with that, you can add the following line to your <code>.Renviron</code> file manually to produce the same result.</p>
+<p>The above script will add a line to your <code>.Renviron</code> file to be re-used whenever you are using the package. If you are not comfortable with the package writing to your home directory, you can add the following line to your <code>.Renviron</code> file manually to produce the same result. The function <code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code> should open up your <code>.Renviron</code> file for you to make edits to with the following line (use your actual API key for the right hand side value):</p>
 <p><code>NASS_KEY = 'YOUR_KEY_IN_QUOTATIONS'</code></p>
-<p>If you are not comfortable with either of these options, then to use the package you need to ensure that the <code>token</code> parameter is set to your API key in each of your function calls that queries USDA Quick Stats.</p>
+<p>If you are not comfortable with either of these options, then to use the package you need to ensure that the <code>key</code> parameter is set to your API key in each of your function calls that queries USDA Quick Stats.</p>
 </div>
 </div>
 <div id="get-data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#get-data" class="anchor"></a>Get Data</h1>
-<p>As previously stated, the workhorse function is the <code><a href="../reference/nass_data.html">nass_data()</a></code> function which will make query calls and return a data.frame as long as the query will return 50,000 or fewer observations. By way of example, we can put in a query to Quick Stats for the value of agricultural land (and buildings) in Wake County North Carolina for 2012:</p>
+<p>As previously stated, the workhorse function is the <code><a href="../reference/nass_data.html">nass_data()</a></code> function which will make query calls and return a data.frame as long as the query will return 50,000 or fewer observations. Each argument in the function call corresponds to the categories which are displayed on the web interface of Quick Stats. The arguments accept character values and even character vectors in the case of multiple selections in a category. By way of an example, we can put in a query to Quick Stats for the value of agricultural land (and buildings) in Durham and Wake County North Carolina for 2012 (warning: there is a lot of information :</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/nass_data.html">nass_data</a></span>(<span class="dt">year =</span> <span class="dv">2012</span>,</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">          <span class="dt">short_desc =</span> <span class="st">"AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $"</span>,</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">          <span class="dt">county_name =</span> <span class="st">"WAKE"</span>,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">          <span class="dt">county_name =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Durham"</span>, <span class="st">"WAKE"</span>),</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">          <span class="dt">state_name =</span> <span class="st">"NORTH CAROLINA"</span>)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;   source_desc sector_desc            group_desc commodity_desc</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; 1      CENSUS   ECONOMICS FARMS &amp; LAND &amp; ASSETS        AG LAND</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;       class_desc      prodn_practice_desc        util_practice_desc</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; 1 INCL BUILDINGS ALL PRODUCTION PRACTICES ALL UTILIZATION PRACTICES</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   statisticcat_desc unit_desc</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 1       ASSET VALUE         $</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;                                             short_desc domain_desc</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 1 AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $       TOTAL</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;   domaincat_desc agg_level_desc state_ansi state_fips_code state_alpha</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 1  NOT SPECIFIED         COUNTY         37              37          NC</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;       state_name asd_code         asd_desc county_ansi county_code</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; 1 NORTH CAROLINA       50 CENTRAL PIEDMONT         183         183</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;   county_name region_desc zip_5 watershed_code watershed_desc</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; 1        WAKE        &lt;NA&gt;  &lt;NA&gt;       00000000           &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;   congr_district_code country_code  country_name</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 1                &lt;NA&gt;         9000 UNITED STATES</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt;                            location_desc year     freq_desc begin_code</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; 1 NORTH CAROLINA, CENTRAL PIEDMONT, WAKE 2012 POINT IN TIME         12</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;   end_code reference_period_desc week_ending           load_time</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; 1       12            </span><span class="re">END</span><span class="co"> OF DEC        &lt;NA&gt; 2012-12-31 00:00:00</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt;         Value CV (%)</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; 1 806,464,000    7.9</span></a></code></pre></div>
-<p>The output of this query has a lot to digest, but the main focus is on the <code>Value</code> variable in the resulting data.frame. Please note that the returned <code>Value</code> for the query is of the class character. The parameter <code>numeric_vals</code> can be set to <code>TRUE</code> to have this return a numeric value, however the default is to be a character type as there are some suppressed values which will be coerced to <code>NA</code> when <code>numeric_vals</code> is set to <code>TRUE</code>.</p>
-<p>Aside from the output, the particular query used four parameters for its output: <code>year</code>, <code>short_desc</code>, <code>county_name</code>, and <code>state_name</code>. Each of these parameters have a particular set of values which can generate of query, which can be figured out using the <code><a href="../reference/nass_param.html">nass_param()</a></code> function. In querying the Quick Stats API, you usually do not need to subset many parameters to get to the 50,000 limitation but if you do not get within the 50,000 limitation the call will produce an error.</p>
-<p>There are 18 parameters for each query, although most of those will be <code>NULL</code> values and not required to specify an output.</p>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;   asd_code      prodn_practice_desc state_alpha year watershed_desc</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; 1       40 ALL PRODUCTION PRACTICES          NC 2012               </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 2       50 ALL PRODUCTION PRACTICES          NC 2012               </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   country_code end_code     class_desc</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 1         9000       12 INCL BUILDINGS</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 2         9000       12 INCL BUILDINGS</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;                               location_desc week_ending     freq_desc</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 1 NORTH CAROLINA, NORTHERN PIEDMONT, DURHAM             POINT IN TIME</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 2    NORTH CAROLINA, CENTRAL PIEDMONT, WAKE             POINT IN TIME</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;   statisticcat_desc county_code begin_code</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; 1       ASSET VALUE         063         12</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; 2       ASSET VALUE         183         12</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;                                             short_desc county_name</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; 1 AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $      DURHAM</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 2 AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $        WAKE</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;   domain_desc region_desc       Value domaincat_desc            group_desc</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; 1       TOTAL             178,892,000  NOT SPECIFIED FARMS &amp; LAND &amp; ASSETS</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; 2       TOTAL             806,464,000  NOT SPECIFIED FARMS &amp; LAND &amp; ASSETS</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;   zip_5 CV (%) county_ansi watershed_code reference_period_desc</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; 1          7.9         063       00000000            </span><span class="re">END</span><span class="co"> OF DEC</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; 2          7.9         183       00000000            </span><span class="re">END</span><span class="co"> OF DEC</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt;          util_practice_desc source_desc commodity_desc          asd_desc</span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; 1 ALL UTILIZATION PRACTICES      CENSUS        AG LAND NORTHERN PIEDMONT</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt; 2 ALL UTILIZATION PRACTICES      CENSUS        AG LAND  CENTRAL PIEDMONT</span></a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt;   state_fips_code sector_desc congr_district_code     state_name</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt; 1              37   ECONOMICS                     NORTH CAROLINA</span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co">#&gt; 2              37   ECONOMICS                     NORTH CAROLINA</span></a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co">#&gt;             load_time agg_level_desc state_ansi unit_desc  country_name</span></a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt; 1 2012-12-31 00:00:00         COUNTY         37         $ UNITED STATES</span></a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt; 2 2012-12-31 00:00:00         COUNTY         37         $ UNITED STATES</span></a></code></pre></div>
+<p>The output of this query has a lot to digest. The main focus is on the <code>Value</code> variable in the resulting data.frame. Please note that the returned <code>Value</code> for the query is of the class character. The parameter <code>numeric_vals</code> can be set to <code>TRUE</code> to have this return a numeric value, however the default is to be a character type as there are some suppressed values which will be coerced to <code>NA</code> when <code>numeric_vals</code> is set to <code>TRUE</code>.</p>
+<p>Aside from the output, the particular query used four parameters for its output: <code>year</code>, <code>short_desc</code>, <code>county_name</code>, and <code>state_name</code>. Each of these parameters have a particular set of values which can generate of query, which can be figured out using the <code><a href="../reference/nass_param.html">nass_param()</a></code> function. The <code>year</code> argument is the only argument that accepts either a character or numeric value, all other arguments only accept character vectors which can be multiple values in the case of <code>county_name</code> in the call above. The arguments for <code>usdarnass</code> are not case sensitive. Whether the county is called “Durham”, “durham”, “DURHAM”, or “dUrHaM” the parameter will be ultimately passed to the API the same.</p>
+<p>In querying the Quick Stats API, you usually do not need to subset many parameters to get to the 50,000 limitation but if you do not get within the 50,000 limitation the call will produce an error. As of right now, there are 18 parameters for each query, although most of those will be <code>NULL</code> values and not required to specify an output.</p>
 <div id="parameters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#parameters" class="anchor"></a>Parameters</h2>
@@ -227,24 +235,24 @@
 <li>
 <code>reference_period_desc</code> “Period” - The specific time frame, within a freq_desc.</li>
 </ol>
-<p>The descriptions of parameters here are mostly thought of as minimal because much of the actual parameters have many values. This is where the <code><a href="../reference/nass_param.html">nass_param()</a></code> function comes into play in order to give the full set of values for each parameter.</p>
+<p>The descriptions of parameters here are minimal as most of the actual parameters have a vast amount of available options. This is where the <code><a href="../reference/nass_param.html">nass_param()</a></code> function comes into play in order to give the full set of values for each parameter.</p>
 </div>
 </div>
 <div id="get-parameter" class="section level1">
 <h1 class="hasAnchor">
 <a href="#get-parameter" class="anchor"></a>Get Parameter</h1>
-<p>The <code><a href="../reference/nass_param.html">nass_param()</a></code> function will return a vector of all the possible values for a parameter conditional on the other parameter subsets given above. By way of example, we can see that there are only two sources of datasets for the Quick Stats queries by asking what the values for the <code>source_desc</code> parameter are:</p>
+<p>The <code><a href="../reference/nass_param.html">nass_param()</a></code> function will return a vector of all the possible values for a parameter conditional on the other parameter subsets given above. We can see that there are only two sources of datasets for the Quick Stats queries by asking what the values for the <code>source_desc</code> parameter are:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/nass_param.html">nass_param</a></span>(<span class="st">"source_desc"</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] "CENSUS" "SURVEY"</span></a></code></pre></div>
-<p>The first argument in <code><a href="../reference/nass_param.html">nass_param()</a></code> is the parameter of interest, which can take on any of the 18 values from the parameters section. This argument must be passed in a character format, so make sure to use quotations in your calls. The characters are also not case sensitive in the calls. The <code>year</code> parameter is the only parameter that does not need to be a character vector but can be numeric instead.</p>
-<p>This function is most helpful in determining what variables are available for a certain subset. For example, if I were interested in what county level variables in Ohio are available in 2000 I might start by determining what “Group” is available at that level:</p>
+<p>The first argument in <code><a href="../reference/nass_param.html">nass_param()</a></code> is the parameter of interest, which can take on any of the 18 values from the parameters section. This argument must be passed in a character format, so make sure to use quotations in your calls. The characters are also not case sensitive in the calls.</p>
+<p>This function is most helpful in determining what variables are available for a certain subset. For example, if I was interested in what county level variables in Ohio are available in 2000 I might start by determining what “Group” is available at that level:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/nass_param.html">nass_param</a></span>(<span class="st">"group_desc"</span>,</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">           <span class="dt">state_name =</span> <span class="st">"OHIO"</span>,</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">           <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>,</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">           <span class="dt">year =</span> <span class="dv">2000</span>)</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "DAIRY"                 "FARMS &amp; LAND &amp; ASSETS" "FIELD CROPS"          </span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; [4] "LIVESTOCK"             "VEGETABLES"</span></a></code></pre></div>
-<p>Now, if I want to further figure out what commodities are available for the “DAIRY” subset of this data but only after 2000, I would make a call of :</p>
+<p>Now, if I want to further figure out what commodities are available for the “DAIRY” subset of this data but only after 2000, I would make a call of:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/nass_param.html">nass_param</a></span>(<span class="st">"commodity_desc"</span>,</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">           <span class="dt">group_desc =</span> <span class="st">"dairy"</span>,</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">           <span class="dt">state_name =</span> <span class="st">"OHIO"</span>,</a>
@@ -258,8 +266,8 @@
 <a href="#get-count" class="anchor"></a>Get Count</h1>
 <p>Every query with <code><a href="../reference/nass_data.html">nass_data()</a></code> has a 50,000 limit of observations. In order to determine the number of observations in a query, the <code><a href="../reference/nass_count.html">nass_count()</a></code> function will accept all the same parameters as <code><a href="../reference/nass_data.html">nass_data()</a></code> but its output is a numeric of the observations in a query:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>()</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] 41624761</span></a></code></pre></div>
-<p>Here we see how many observations are currently in the Quick Stats as of 2019-06-27. Clearly, the entire data can not be downloaded with a query of their API. If you are concerned about downloading all of the Quick Stats data, then it would be more efficient to use their ftp site <a href="ftp://ftp.nass.usda.gov/quickstats/">ftp://ftp.nass.usda.gov/quickstats/</a>.</p>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] 41628968</span></a></code></pre></div>
+<p>Here we see how many observations are currently in the Quick Stats as of 2019-06-29. Clearly, the entire data can not be downloaded with a query of their API. If you are concerned about downloading all of the Quick Stats data, then it would be more efficient to use their ftp site <a href="ftp://ftp.nass.usda.gov/quickstats/">ftp://ftp.nass.usda.gov/quickstats/</a>.</p>
 <p>By way of another example, we can look at how many observations are available related to agricultural land at the county level:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">           <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>)</a>
@@ -268,215 +276,68 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/nass_data.html">nass_data</a></span>(<span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">          <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>)</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; Error in nass_data(commodity_desc = "AG LAND", agg_level_desc = "COUNTY"): Query returns 2,053,425 records. The limit is 50,000. Subset the query to fit within limit. See nass_count()</span></a></code></pre></div>
-<p>At this point in time a bit of understanding of the data and the user’s goals are needed. If there is only one state of interest for the study, then subsetting the data further to a state is likely the best strategy. However, it is more likely that the user wants the all county level data related to agricultural land. My strategy would be to look at the number of observations for each year of interest I might have:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">years &lt;-<span class="st"> </span><span class="dv">2000</span><span class="op">:</span><span class="dv">2017</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(years, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">year =</span> x,</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">                                     <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">                                     <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>))</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;  [1]      0      0 418908      0      0      0      0 436633      0      0</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; [11]      0      0 422050      0      0      0      0 417663</span></a></code></pre></div>
-<p>The observations here are only related to 2002, 2007, and 2012 which are agricultural census years and it is highly likely that there are a lot of variables in the category what would likely not be useful. It is then best to look at the descriptions of the variables to figure out what data would be most useful:</p>
+<p>At this point in time a bit of understanding of the data and the user’s goals are needed. If there is only one state of interest for the study, then subsetting the data further to a state is likely the best strategy. However, it is more likely that the user wants the all county level data related to agricultural land. My strategy would be to look at the number of observations for each year of interest to my data request. I would then take a vector of potential values for years and iterate a call to <code>nass_count</code> over each year to determine the count of values for each year:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">years        &lt;-<span class="st"> </span><span class="dv">2000</span><span class="op">:</span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(years) &lt;-<span class="st"> </span><span class="dv">2000</span><span class="op">:</span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(years,</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">       <span class="cf">function</span>(x) <span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">year =</span> x,</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">                              <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">                              <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>), <span class="dt">USE.NAMES =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;   2000   2001   2002   2003   2004   2005   2006   2007   2008   2009 </span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;      0      0 418908      0      0      0      0 436633      0      0 </span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;   2010   2011   2012   2013   2014   2015   2016   2017 </span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;      0      0 422050      0      0      0      0 417663</span></a></code></pre></div>
+<p>The observations here are only related to 2002, 2007, and 2012 which are agricultural census years and it is highly likely that there are a lot of variables in the category what would likely not be excessive information. It is then best to look at the descriptions of the variables to figure out what data would be most useful:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">agland_params &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nass_param.html">nass_param</a></span>(<span class="st">"short_desc"</span>,</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">                            <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">                            <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>)</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">agland_params</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  [1] "AG LAND - ACRES"                                                                                </span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  [2] "AG LAND - NUMBER OF OPERATIONS"                                                                 </span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  [3] "AG LAND - OPERATIONS WITH TREATED"                                                              </span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  [4] "AG LAND - TREATED, MEASURED IN ACRES"                                                           </span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  [5] "AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - ACRES"                                      </span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  [6] "AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - NUMBER OF OPERATIONS"                       </span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  [7] "AG LAND, (EXCL HARVESTED CROPLAND), IRRIGATED - ACRES"                                          </span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  [8] "AG LAND, (EXCL HARVESTED CROPLAND), IRRIGATED - NUMBER OF OPERATIONS"                           </span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  [9] "AG LAND, CROP INSURANCE - ACRES"                                                                </span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; [10] "AG LAND, CROP INSURANCE - NUMBER OF OPERATIONS"                                                 </span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; [11] "AG LAND, CROPLAND - ACRES"                                                                      </span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; [12] "AG LAND, CROPLAND - NUMBER OF OPERATIONS"                                                       </span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; [13] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED) - ACRES"                                         </span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; [14] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED) - NUMBER OF OPERATIONS"                          </span></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; [15] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), ALL CROPS FAILED - ACRES"                       </span></a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; [16] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), ALL CROPS FAILED - NUMBER OF OPERATIONS"        </span></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt; [17] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), CULTIVATED SUMMER FALLOW - ACRES"               </span></a>
-<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; [18] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), CULTIVATED SUMMER FALLOW - NUMBER OF OPERATIONS"</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; [19] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), IDLE - ACRES"                                   </span></a>
-<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt; [20] "AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), IDLE - NUMBER OF OPERATIONS"                    </span></a>
-<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt; [21] "AG LAND, CROPLAND, (EXCL PASTURED) - OPERATIONS WITH TREATED"                                   </span></a>
-<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co">#&gt; [22] "AG LAND, CROPLAND, (EXCL PASTURED) - TREATED, MEASURED IN ACRES"                                </span></a>
-<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#&gt; [23] "AG LAND, CROPLAND, HARVESTED - ACRES"                                                           </span></a>
-<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt; [24] "AG LAND, CROPLAND, HARVESTED - NUMBER OF OPERATIONS"                                            </span></a>
-<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co">#&gt; [25] "AG LAND, CROPLAND, HARVESTED, IRRIGATED - ACRES"                                                </span></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co">#&gt; [26] "AG LAND, CROPLAND, HARVESTED, IRRIGATED - NUMBER OF OPERATIONS"                                 </span></a>
-<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#&gt; [27] "AG LAND, CROPLAND, HARVESTED, ORGANIC - ACRES"                                                  </span></a>
-<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co">#&gt; [28] "AG LAND, CROPLAND, HARVESTED, ORGANIC - NUMBER OF OPERATIONS"                                   </span></a>
-<a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#&gt; [29] "AG LAND, CROPLAND, ORGANIC - ACRES"                                                             </span></a>
-<a class="sourceLine" id="cb12-34" data-line-number="34"><span class="co">#&gt; [30] "AG LAND, CROPLAND, ORGANIC - NUMBER OF OPERATIONS"                                              </span></a>
-<a class="sourceLine" id="cb12-35" data-line-number="35"><span class="co">#&gt; [31] "AG LAND, CROPLAND, PASTURED ONLY - ACRES"                                                       </span></a>
-<a class="sourceLine" id="cb12-36" data-line-number="36"><span class="co">#&gt; [32] "AG LAND, CROPLAND, PASTURED ONLY - NUMBER OF OPERATIONS"                                        </span></a>
-<a class="sourceLine" id="cb12-37" data-line-number="37"><span class="co">#&gt; [33] "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $"                                           </span></a>
-<a class="sourceLine" id="cb12-38" data-line-number="38"><span class="co">#&gt; [34] "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ / ACRE"                                    </span></a>
-<a class="sourceLine" id="cb12-39" data-line-number="39"><span class="co">#&gt; [35] "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ / OPERATION"                               </span></a>
-<a class="sourceLine" id="cb12-40" data-line-number="40"><span class="co">#&gt; [36] "AG LAND, INCL BUILDINGS - OPERATIONS WITH ASSET VALUE"                                          </span></a>
-<a class="sourceLine" id="cb12-41" data-line-number="41"><span class="co">#&gt; [37] "AG LAND, IRRIGATED - ACRES"                                                                     </span></a>
-<a class="sourceLine" id="cb12-42" data-line-number="42"><span class="co">#&gt; [38] "AG LAND, IRRIGATED - NUMBER OF OPERATIONS"                                                      </span></a>
-<a class="sourceLine" id="cb12-43" data-line-number="43"><span class="co">#&gt; [39] "AG LAND, ORGANIC - ACRES"                                                                       </span></a>
-<a class="sourceLine" id="cb12-44" data-line-number="44"><span class="co">#&gt; [40] "AG LAND, ORGANIC - NUMBER OF OPERATIONS"                                                        </span></a>
-<a class="sourceLine" id="cb12-45" data-line-number="45"><span class="co">#&gt; [41] "AG LAND, ORGANIC, TRANSITIONING - ACRES"                                                        </span></a>
-<a class="sourceLine" id="cb12-46" data-line-number="46"><span class="co">#&gt; [42] "AG LAND, ORGANIC, TRANSITIONING - NUMBER OF OPERATIONS"                                         </span></a>
-<a class="sourceLine" id="cb12-47" data-line-number="47"><span class="co">#&gt; [43] "AG LAND, OWNED, IN FARMS - ACRES"                                                               </span></a>
-<a class="sourceLine" id="cb12-48" data-line-number="48"><span class="co">#&gt; [44] "AG LAND, PASTURELAND - ACRES"                                                                   </span></a>
-<a class="sourceLine" id="cb12-49" data-line-number="49"><span class="co">#&gt; [45] "AG LAND, PASTURELAND - NUMBER OF OPERATIONS"                                                    </span></a>
-<a class="sourceLine" id="cb12-50" data-line-number="50"><span class="co">#&gt; [46] "AG LAND, PASTURELAND - OPERATIONS WITH TREATED"                                                 </span></a>
-<a class="sourceLine" id="cb12-51" data-line-number="51"><span class="co">#&gt; [47] "AG LAND, PASTURELAND - TREATED, MEASURED IN ACRES"                                              </span></a>
-<a class="sourceLine" id="cb12-52" data-line-number="52"><span class="co">#&gt; [48] "AG LAND, PASTURELAND, (EXCL CROPLAND &amp; WOODLAND) - ACRES"                                       </span></a>
-<a class="sourceLine" id="cb12-53" data-line-number="53"><span class="co">#&gt; [49] "AG LAND, PASTURELAND, (EXCL CROPLAND &amp; WOODLAND) - NUMBER OF OPERATIONS"                        </span></a>
-<a class="sourceLine" id="cb12-54" data-line-number="54"><span class="co">#&gt; [50] "AG LAND, PASTURELAND, (EXCL WOODLAND) - ACRES"                                                  </span></a>
-<a class="sourceLine" id="cb12-55" data-line-number="55"><span class="co">#&gt; [51] "AG LAND, PASTURELAND, (EXCL WOODLAND) - NUMBER OF OPERATIONS"                                   </span></a>
-<a class="sourceLine" id="cb12-56" data-line-number="56"><span class="co">#&gt; [52] "AG LAND, PASTURELAND, ORGANIC - ACRES"                                                          </span></a>
-<a class="sourceLine" id="cb12-57" data-line-number="57"><span class="co">#&gt; [53] "AG LAND, PASTURELAND, ORGANIC - NUMBER OF OPERATIONS"                                           </span></a>
-<a class="sourceLine" id="cb12-58" data-line-number="58"><span class="co">#&gt; [54] "AG LAND, RENTED FROM OTHERS, IN FARMS - ACRES"                                                  </span></a>
-<a class="sourceLine" id="cb12-59" data-line-number="59"><span class="co">#&gt; [55] "AG LAND, WOODLAND - ACRES"                                                                      </span></a>
-<a class="sourceLine" id="cb12-60" data-line-number="60"><span class="co">#&gt; [56] "AG LAND, WOODLAND - NUMBER OF OPERATIONS"                                                       </span></a>
-<a class="sourceLine" id="cb12-61" data-line-number="61"><span class="co">#&gt; [57] "AG LAND, WOODLAND, (EXCL PASTURED) - ACRES"                                                     </span></a>
-<a class="sourceLine" id="cb12-62" data-line-number="62"><span class="co">#&gt; [58] "AG LAND, WOODLAND, (EXCL PASTURED) - NUMBER OF OPERATIONS"                                      </span></a>
-<a class="sourceLine" id="cb12-63" data-line-number="63"><span class="co">#&gt; [59] "AG LAND, WOODLAND, PASTURED - ACRES"                                                            </span></a>
-<a class="sourceLine" id="cb12-64" data-line-number="64"><span class="co">#&gt; [60] "AG LAND, WOODLAND, PASTURED - NUMBER OF OPERATIONS"</span></a></code></pre></div>
-<p>We can use the output for the parameter values to see the number of observations within each of these categories:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(agland_params, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">short_desc =</span> x,</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">                                             <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">                                             <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>))</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;                                                                                 AG LAND - ACRES </span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt;                                                                                           15199 </span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt;                                                                  AG LAND - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt;                                                                                           15199 </span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt;                                                               AG LAND - OPERATIONS WITH TREATED </span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt;                                                                                           98699 </span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;                                                            AG LAND - TREATED, MEASURED IN ACRES </span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;                                                                                           98699 </span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt;                                       AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - ACRES </span></a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt;                                                                                           15370 </span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt;                        AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt;                                                                                           15370 </span></a>
-<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt;                                           AG LAND, (EXCL HARVESTED CROPLAND), IRRIGATED - ACRES </span></a>
-<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt;                                                                                           10250 </span></a>
-<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="co">#&gt;                            AG LAND, (EXCL HARVESTED CROPLAND), IRRIGATED - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co">#&gt;                                                                                           10250 </span></a>
-<a class="sourceLine" id="cb13-20" data-line-number="20"><span class="co">#&gt;                                                                 AG LAND, CROP INSURANCE - ACRES </span></a>
-<a class="sourceLine" id="cb13-21" data-line-number="21"><span class="co">#&gt;                                                                                           11884 </span></a>
-<a class="sourceLine" id="cb13-22" data-line-number="22"><span class="co">#&gt;                                                  AG LAND, CROP INSURANCE - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-23" data-line-number="23"><span class="co">#&gt;                                                                                           11884 </span></a>
-<a class="sourceLine" id="cb13-24" data-line-number="24"><span class="co">#&gt;                                                                       AG LAND, CROPLAND - ACRES </span></a>
-<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="co">#&gt;                                                                                           15374 </span></a>
-<a class="sourceLine" id="cb13-26" data-line-number="26"><span class="co">#&gt;                                                        AG LAND, CROPLAND - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-27" data-line-number="27"><span class="co">#&gt;                                                                                           15374 </span></a>
-<a class="sourceLine" id="cb13-28" data-line-number="28"><span class="co">#&gt;                                          AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED) - ACRES </span></a>
-<a class="sourceLine" id="cb13-29" data-line-number="29"><span class="co">#&gt;                                                                                           29422 </span></a>
-<a class="sourceLine" id="cb13-30" data-line-number="30"><span class="co">#&gt;                           AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED) - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-31" data-line-number="31"><span class="co">#&gt;                                                                                           29422 </span></a>
-<a class="sourceLine" id="cb13-32" data-line-number="32"><span class="co">#&gt;                        AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), ALL CROPS FAILED - ACRES </span></a>
-<a class="sourceLine" id="cb13-33" data-line-number="33"><span class="co">#&gt;                                                                                           14903 </span></a>
-<a class="sourceLine" id="cb13-34" data-line-number="34"><span class="co">#&gt;         AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), ALL CROPS FAILED - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-35" data-line-number="35"><span class="co">#&gt;                                                                                           14903 </span></a>
-<a class="sourceLine" id="cb13-36" data-line-number="36"><span class="co">#&gt;                AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), CULTIVATED SUMMER FALLOW - ACRES </span></a>
-<a class="sourceLine" id="cb13-37" data-line-number="37"><span class="co">#&gt;                                                                                           13778 </span></a>
-<a class="sourceLine" id="cb13-38" data-line-number="38"><span class="co">#&gt; AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), CULTIVATED SUMMER FALLOW - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-39" data-line-number="39"><span class="co">#&gt;                                                                                           13778 </span></a>
-<a class="sourceLine" id="cb13-40" data-line-number="40"><span class="co">#&gt;                                    AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), IDLE - ACRES </span></a>
-<a class="sourceLine" id="cb13-41" data-line-number="41"><span class="co">#&gt;                                                                                           12224 </span></a>
-<a class="sourceLine" id="cb13-42" data-line-number="42"><span class="co">#&gt;                     AG LAND, CROPLAND, (EXCL HARVESTED &amp; PASTURED), IDLE - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-43" data-line-number="43"><span class="co">#&gt;                                                                                           12224 </span></a>
-<a class="sourceLine" id="cb13-44" data-line-number="44"><span class="co">#&gt;                                    AG LAND, CROPLAND, (EXCL PASTURED) - OPERATIONS WITH TREATED </span></a>
-<a class="sourceLine" id="cb13-45" data-line-number="45"><span class="co">#&gt;                                                                                           15326 </span></a>
-<a class="sourceLine" id="cb13-46" data-line-number="46"><span class="co">#&gt;                                 AG LAND, CROPLAND, (EXCL PASTURED) - TREATED, MEASURED IN ACRES </span></a>
-<a class="sourceLine" id="cb13-47" data-line-number="47"><span class="co">#&gt;                                                                                           15326 </span></a>
-<a class="sourceLine" id="cb13-48" data-line-number="48"><span class="co">#&gt;                                                            AG LAND, CROPLAND, HARVESTED - ACRES </span></a>
-<a class="sourceLine" id="cb13-49" data-line-number="49"><span class="co">#&gt;                                                                                          410798 </span></a>
-<a class="sourceLine" id="cb13-50" data-line-number="50"><span class="co">#&gt;                                             AG LAND, CROPLAND, HARVESTED - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-51" data-line-number="51"><span class="co">#&gt;                                                                                          388699 </span></a>
-<a class="sourceLine" id="cb13-52" data-line-number="52"><span class="co">#&gt;                                                 AG LAND, CROPLAND, HARVESTED, IRRIGATED - ACRES </span></a>
-<a class="sourceLine" id="cb13-53" data-line-number="53"><span class="co">#&gt;                                                                                           15170 </span></a>
-<a class="sourceLine" id="cb13-54" data-line-number="54"><span class="co">#&gt;                                  AG LAND, CROPLAND, HARVESTED, IRRIGATED - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-55" data-line-number="55"><span class="co">#&gt;                                                                                           15170 </span></a>
-<a class="sourceLine" id="cb13-56" data-line-number="56"><span class="co">#&gt;                                                   AG LAND, CROPLAND, HARVESTED, ORGANIC - ACRES </span></a>
-<a class="sourceLine" id="cb13-57" data-line-number="57"><span class="co">#&gt;                                                                                            1895 </span></a>
-<a class="sourceLine" id="cb13-58" data-line-number="58"><span class="co">#&gt;                                    AG LAND, CROPLAND, HARVESTED, ORGANIC - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-59" data-line-number="59"><span class="co">#&gt;                                                                                            1895 </span></a>
-<a class="sourceLine" id="cb13-60" data-line-number="60"><span class="co">#&gt;                                                              AG LAND, CROPLAND, ORGANIC - ACRES </span></a>
-<a class="sourceLine" id="cb13-61" data-line-number="61"><span class="co">#&gt;                                                                                            1467 </span></a>
-<a class="sourceLine" id="cb13-62" data-line-number="62"><span class="co">#&gt;                                               AG LAND, CROPLAND, ORGANIC - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-63" data-line-number="63"><span class="co">#&gt;                                                                                            1467 </span></a>
-<a class="sourceLine" id="cb13-64" data-line-number="64"><span class="co">#&gt;                                                        AG LAND, CROPLAND, PASTURED ONLY - ACRES </span></a>
-<a class="sourceLine" id="cb13-65" data-line-number="65"><span class="co">#&gt;                                                                                           15240 </span></a>
-<a class="sourceLine" id="cb13-66" data-line-number="66"><span class="co">#&gt;                                         AG LAND, CROPLAND, PASTURED ONLY - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-67" data-line-number="67"><span class="co">#&gt;                                                                                           15240 </span></a>
-<a class="sourceLine" id="cb13-68" data-line-number="68"><span class="co">#&gt;                                            AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ </span></a>
-<a class="sourceLine" id="cb13-69" data-line-number="69"><span class="co">#&gt;                                                                                           15382 </span></a>
-<a class="sourceLine" id="cb13-70" data-line-number="70"><span class="co">#&gt;                                     AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ / ACRE </span></a>
-<a class="sourceLine" id="cb13-71" data-line-number="71"><span class="co">#&gt;                                                                                           15382 </span></a>
-<a class="sourceLine" id="cb13-72" data-line-number="72"><span class="co">#&gt;                                AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ / OPERATION </span></a>
-<a class="sourceLine" id="cb13-73" data-line-number="73"><span class="co">#&gt;                                                                                           15382 </span></a>
-<a class="sourceLine" id="cb13-74" data-line-number="74"><span class="co">#&gt;                                           AG LAND, INCL BUILDINGS - OPERATIONS WITH ASSET VALUE </span></a>
-<a class="sourceLine" id="cb13-75" data-line-number="75"><span class="co">#&gt;                                                                                          119569 </span></a>
-<a class="sourceLine" id="cb13-76" data-line-number="76"><span class="co">#&gt;                                                                      AG LAND, IRRIGATED - ACRES </span></a>
-<a class="sourceLine" id="cb13-77" data-line-number="77"><span class="co">#&gt;                                                                                          131817 </span></a>
-<a class="sourceLine" id="cb13-78" data-line-number="78"><span class="co">#&gt;                                                       AG LAND, IRRIGATED - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-79" data-line-number="79"><span class="co">#&gt;                                                                                          128786 </span></a>
-<a class="sourceLine" id="cb13-80" data-line-number="80"><span class="co">#&gt;                                                                        AG LAND, ORGANIC - ACRES </span></a>
-<a class="sourceLine" id="cb13-81" data-line-number="81"><span class="co">#&gt;                                                                                            2122 </span></a>
-<a class="sourceLine" id="cb13-82" data-line-number="82"><span class="co">#&gt;                                                         AG LAND, ORGANIC - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-83" data-line-number="83"><span class="co">#&gt;                                                                                            2122 </span></a>
-<a class="sourceLine" id="cb13-84" data-line-number="84"><span class="co">#&gt;                                                         AG LAND, ORGANIC, TRANSITIONING - ACRES </span></a>
-<a class="sourceLine" id="cb13-85" data-line-number="85"><span class="co">#&gt;                                                                                            2084 </span></a>
-<a class="sourceLine" id="cb13-86" data-line-number="86"><span class="co">#&gt;                                          AG LAND, ORGANIC, TRANSITIONING - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-87" data-line-number="87"><span class="co">#&gt;                                                                                            4048 </span></a>
-<a class="sourceLine" id="cb13-88" data-line-number="88"><span class="co">#&gt;                                                                AG LAND, OWNED, IN FARMS - ACRES </span></a>
-<a class="sourceLine" id="cb13-89" data-line-number="89"><span class="co">#&gt;                                                                                           15300 </span></a>
-<a class="sourceLine" id="cb13-90" data-line-number="90"><span class="co">#&gt;                                                                    AG LAND, PASTURELAND - ACRES </span></a>
-<a class="sourceLine" id="cb13-91" data-line-number="91"><span class="co">#&gt;                                                                                           15350 </span></a>
-<a class="sourceLine" id="cb13-92" data-line-number="92"><span class="co">#&gt;                                                     AG LAND, PASTURELAND - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-93" data-line-number="93"><span class="co">#&gt;                                                                                           15350 </span></a>
-<a class="sourceLine" id="cb13-94" data-line-number="94"><span class="co">#&gt;                                                  AG LAND, PASTURELAND - OPERATIONS WITH TREATED </span></a>
-<a class="sourceLine" id="cb13-95" data-line-number="95"><span class="co">#&gt;                                                                                           15040 </span></a>
-<a class="sourceLine" id="cb13-96" data-line-number="96"><span class="co">#&gt;                                               AG LAND, PASTURELAND - TREATED, MEASURED IN ACRES </span></a>
-<a class="sourceLine" id="cb13-97" data-line-number="97"><span class="co">#&gt;                                                                                           15040 </span></a>
-<a class="sourceLine" id="cb13-98" data-line-number="98"><span class="co">#&gt;                                        AG LAND, PASTURELAND, (EXCL CROPLAND &amp; WOODLAND) - ACRES </span></a>
-<a class="sourceLine" id="cb13-99" data-line-number="99"><span class="co">#&gt;                                                                                           15335 </span></a>
-<a class="sourceLine" id="cb13-100" data-line-number="100"><span class="co">#&gt;                         AG LAND, PASTURELAND, (EXCL CROPLAND &amp; WOODLAND) - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-101" data-line-number="101"><span class="co">#&gt;                                                                                           15335 </span></a>
-<a class="sourceLine" id="cb13-102" data-line-number="102"><span class="co">#&gt;                                                   AG LAND, PASTURELAND, (EXCL WOODLAND) - ACRES </span></a>
-<a class="sourceLine" id="cb13-103" data-line-number="103"><span class="co">#&gt;                                                                                           14515 </span></a>
-<a class="sourceLine" id="cb13-104" data-line-number="104"><span class="co">#&gt;                                    AG LAND, PASTURELAND, (EXCL WOODLAND) - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-105" data-line-number="105"><span class="co">#&gt;                                                                                           14515 </span></a>
-<a class="sourceLine" id="cb13-106" data-line-number="106"><span class="co">#&gt;                                                           AG LAND, PASTURELAND, ORGANIC - ACRES </span></a>
-<a class="sourceLine" id="cb13-107" data-line-number="107"><span class="co">#&gt;                                                                                            1459 </span></a>
-<a class="sourceLine" id="cb13-108" data-line-number="108"><span class="co">#&gt;                                            AG LAND, PASTURELAND, ORGANIC - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-109" data-line-number="109"><span class="co">#&gt;                                                                                            1459 </span></a>
-<a class="sourceLine" id="cb13-110" data-line-number="110"><span class="co">#&gt;                                                   AG LAND, RENTED FROM OTHERS, IN FARMS - ACRES </span></a>
-<a class="sourceLine" id="cb13-111" data-line-number="111"><span class="co">#&gt;                                                                                           15300 </span></a>
-<a class="sourceLine" id="cb13-112" data-line-number="112"><span class="co">#&gt;                                                                       AG LAND, WOODLAND - ACRES </span></a>
-<a class="sourceLine" id="cb13-113" data-line-number="113"><span class="co">#&gt;                                                                                           15255 </span></a>
-<a class="sourceLine" id="cb13-114" data-line-number="114"><span class="co">#&gt;                                                        AG LAND, WOODLAND - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-115" data-line-number="115"><span class="co">#&gt;                                                                                           15255 </span></a>
-<a class="sourceLine" id="cb13-116" data-line-number="116"><span class="co">#&gt;                                                      AG LAND, WOODLAND, (EXCL PASTURED) - ACRES </span></a>
-<a class="sourceLine" id="cb13-117" data-line-number="117"><span class="co">#&gt;                                                                                           15138 </span></a>
-<a class="sourceLine" id="cb13-118" data-line-number="118"><span class="co">#&gt;                                       AG LAND, WOODLAND, (EXCL PASTURED) - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-119" data-line-number="119"><span class="co">#&gt;                                                                                           15138 </span></a>
-<a class="sourceLine" id="cb13-120" data-line-number="120"><span class="co">#&gt;                                                             AG LAND, WOODLAND, PASTURED - ACRES </span></a>
-<a class="sourceLine" id="cb13-121" data-line-number="121"><span class="co">#&gt;                                                                                           15024 </span></a>
-<a class="sourceLine" id="cb13-122" data-line-number="122"><span class="co">#&gt;                                              AG LAND, WOODLAND, PASTURED - NUMBER OF OPERATIONS </span></a>
-<a class="sourceLine" id="cb13-123" data-line-number="123"><span class="co">#&gt;                                                                                           15024</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-3" data-line-number="3">                            <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>,</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">                            <span class="dt">year =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2002</span>, <span class="dv">2007</span>, <span class="dv">2012</span>))</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(agland_params)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; [1] "AG LAND - ACRES"                                                         </span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; [2] "AG LAND - NUMBER OF OPERATIONS"                                          </span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; [3] "AG LAND - OPERATIONS WITH TREATED"                                       </span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; [4] "AG LAND - TREATED, MEASURED IN ACRES"                                    </span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt; [5] "AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - ACRES"               </span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt; [6] "AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - NUMBER OF OPERATIONS"</span></a></code></pre></div>
+<p>There are 60 parameter values in that query, but only the first 6 are displayed to save space. We can use the output for the parameter values to see the number of observations within each of these categories:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(agland_params),</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">       <span class="cf">function</span>(x) <span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">short_desc =</span> x,</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">                              <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">                              <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>,</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">                              <span class="dt">year =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2002</span>, <span class="dv">2007</span>, <span class="dv">2012</span>)))</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt;                                                          AG LAND - ACRES </span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt;                                                                     9128 </span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt;                                           AG LAND - NUMBER OF OPERATIONS </span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt;                                                                     9128 </span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;                                        AG LAND - OPERATIONS WITH TREATED </span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;                                                                    59228 </span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt;                                     AG LAND - TREATED, MEASURED IN ACRES </span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt;                                                                    59228 </span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt;                AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - ACRES </span></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt;                                                                     9222 </span></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt; AG LAND, (EXCL CROPLAND &amp; PASTURELAND &amp; WOODLAND) - NUMBER OF OPERATIONS </span></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt;                                                                     9222</span></a></code></pre></div>
 <p>While most of these data items fit within the 50,000 limit, not all do. Take for example the “AG LAND - TREATED, MEASURED IN ACRES” category exceeds the limit and would not be able to be downloaded. This is because the treated category actually has multiple domains which can be seen by combining the <code><a href="../reference/nass_param.html">nass_param()</a></code> and <code><a href="../reference/nass_count.html">nass_count()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">agland_domain &lt;-<span class="st"> </span><span class="kw"><a href="../reference/nass_param.html">nass_param</a></span>(<span class="st">"domain_desc"</span>,</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">                            <span class="dt">short_desc =</span> <span class="st">"AG LAND - TREATED, MEASURED IN ACRES"</span>,</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3">                            <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
 <a class="sourceLine" id="cb14-4" data-line-number="4">                            <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>)</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(agland_domain, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">domain_desc =</span> x,</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">                                             <span class="dt">short_desc =</span> <span class="st">"AG LAND - TREATED, MEASURED IN ACRES"</span>,</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">                                             <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">                                             <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>))</a>
-<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt;   CHEMICAL, FUNGICIDE   CHEMICAL, HERBICIDE CHEMICAL, INSECTICIDE </span></a>
-<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt;                 13998                 15296                 27098 </span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt;       CHEMICAL, OTHER            FERTILIZER </span></a>
-<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt;                 12092                 30215</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(agland_domain,</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">       <span class="cf">function</span>(x) <span class="kw"><a href="../reference/nass_count.html">nass_count</a></span>(<span class="dt">domain_desc =</span> x,</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">                              <span class="dt">short_desc =</span> <span class="st">"AG LAND - TREATED, MEASURED IN ACRES"</span>,</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">                              <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">                              <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>))</a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt;   CHEMICAL, FUNGICIDE   CHEMICAL, HERBICIDE CHEMICAL, INSECTICIDE </span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt;                 13998                 15296                 27098 </span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt;       CHEMICAL, OTHER            FERTILIZER </span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt;                 12092                 30215</span></a></code></pre></div>
+<p>To download the above data, one would need to iterate over each of the <code>domain_desc</code> values in order to fit within the limits. The <code>lapply</code> method is likely the easiest way to accomplish this:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">agland_domain_download &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(agland_domain,</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">                                 <span class="cf">function</span>(x) <span class="kw"><a href="../reference/nass_data.html">nass_data</a></span>(<span class="dt">domain_desc =</span> x,</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">                                                       <span class="dt">short_desc =</span> <span class="st">"AG LAND - TREATED, MEASURED IN ACRES"</span>,</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">                                                       <span class="dt">commodity_desc =</span> <span class="st">"AG LAND"</span>,</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">                                                       <span class="dt">agg_level_desc =</span> <span class="st">"COUNTY"</span>))</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">agland_domain_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call</a></span>(<span class="st">"rbind"</span>, agland_domain_download)</a></code></pre></div>
 </div>
   </div>
 

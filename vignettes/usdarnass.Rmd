@@ -26,7 +26,7 @@ The USDA's documentation on Quick Stats can be found throughout [https://www.nas
 
 > Quick Stats is the National Agricultural Statistics Service's (NASS) online, self-service tool to access complete results from the 1997, 2002, 2007, and 2012 Censuses of Agriculture as well as the best source of NASS survey published estimates. The census collects data on all commodities produced on U.S. farms and ranches, as well as detailed information on expenses, income, and operator characteristics. The surveys that NASS conducts collect information on virtually every facet of U.S. agricultural production.
 
-There are two main USDA sources within Quick Stats: censuses and surveys. The census values in Quick Stats start in 1997 while the survey values can range all the way back to 1850 and then annually since 1866. Although Agricultural Censuses occur once every 5 years (1997, 2002, 2007, 2012, and eventually 2017), USDA will administer other censuses which explains the extra years available. At this time, there is no support for documenting the various kinds of data which can be extracted from Quick Stats and this package only serves as an R interface for downloading Quick Stats data and it is up to the user to understand the source of the data they download.
+There are two main USDA sources within Quick Stats: censuses and surveys. The census values in Quick Stats start in 1997 while the survey values can range all the way back to 1850 and then annually since 1866. Although Agricultural Censuses occur once every 5 years (1997, 2002, 2007, 2012, and most recently 2017), USDA will administer other censuses, for instance the [Census of Aquaculture](https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Census_of_Aquaculture/), which explains the additional years of available census data. At this time, there is no support for documenting the various kinds of data which can be extracted from Quick Stats and this package only serves as an R interface for downloading Quick Stats data. It is up to the user to understand the source of the data they download, most of which can be found at [https://www.nass.usda.gov/Surveys/](https://www.nass.usda.gov/Surveys/).
 
 <!-- The core functions are -->
 
@@ -37,7 +37,7 @@ There are two main USDA sources within Quick Stats: censuses and surveys. The ce
 
 # Package Install
 
-Development version (needs devtools installed):
+`usdarnass` is currently on CRAN and can be installed with the typical method of using `install.packages("usdarnass")` in R. However, if you would like the development version then it can be installed with the use of `devtools`:
 
 ```{r installation_github, eval = FALSE}
 # install.packages("devtools")
@@ -65,35 +65,35 @@ All of these functions require an API Key for each query, which can be set with 
 ## Key Install
 
 ```{r key-install, eval = FALSE}
-nass_set_key("YOUR_KEY_IN_QUOTATIONS")
+nass_set_key("YOUR_KEY_IN_QUOTATIONS", overwrite = TRUE)
 # First time, reload your enviornment so you can use the key without restarting R.
 readRenviron("~/.Renviron")
 # You can check it with:
 Sys.getenv("NASS_KEY")
 ```
 
-The above script will add a line to your `.Renviron` file to be re-used whenever you are using the package. If you are not comfortable with that, you can add the following line to your `.Renviron` file manually to produce the same result.
+The above script will add a line to your `.Renviron` file to be re-used whenever you are using the package. If you are not comfortable with the package writing to your home directory, you can add the following line to your `.Renviron` file manually to produce the same result. The function `usethis::edit_r_environ()` should open up your `.Renviron` file for you to make edits to with the following line (use your actual API key for the right hand side value):
 
 `NASS_KEY = 'YOUR_KEY_IN_QUOTATIONS'`
 
-If you are not comfortable with either of these options, then to use the package you need to ensure that the `token` parameter is set to your API key in each of your function calls that queries USDA Quick Stats.
+If you are not comfortable with either of these options, then to use the package you need to ensure that the `key` parameter is set to your API key in each of your function calls that queries USDA Quick Stats.
 
 # Get Data
 
-As previously stated, the workhorse function is the `nass_data()` function which will make query calls and return a data.frame as long as the query will return 50,000 or fewer observations. By way of example, we can put in a query to Quick Stats for the value of agricultural land (and buildings) in Wake County North Carolina for 2012:
+As previously stated, the workhorse function is the `nass_data()` function which will make query calls and return a data.frame as long as the query will return 50,000 or fewer observations. Each argument in the function call corresponds to the categories which are displayed on the web interface of Quick Stats. The arguments accept character values and even character vectors in the case of multiple selections in a category. By way of an example, we can put in a query to Quick Stats for the value of agricultural land (and buildings) in Durham and Wake County North Carolina for 2012 (warning: there is a lot of information :
 
 ```{r get_data}
 nass_data(year = 2012,
           short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $",
-          county_name = "WAKE",
+          county_name = c("Durham", "WAKE"),
           state_name = "NORTH CAROLINA")
 ```
 
-The output of this query has a lot to digest, but the main focus is on the `Value` variable in the resulting data.frame. Please note that the returned `Value` for the query is of the class character. The parameter `numeric_vals` can be set to `TRUE` to have this return a numeric value, however the default is to be a character type as there are some suppressed values which will be coerced to `NA` when `numeric_vals` is set to `TRUE`.
+The output of this query has a lot to digest. The main focus is on the `Value` variable in the resulting data.frame. Please note that the returned `Value` for the query is of the class character. The parameter `numeric_vals` can be set to `TRUE` to have this return a numeric value, however the default is to be a character type as there are some suppressed values which will be coerced to `NA` when `numeric_vals` is set to `TRUE`.
 
-Aside from the output, the particular query used four parameters for its output: `year`, `short_desc`, `county_name`, and `state_name`. Each of these parameters have a particular set of values which can generate of query, which can be figured out using the `nass_param()` function. In querying the Quick Stats API, you usually do not need to subset many parameters to get to the 50,000 limitation but if you do not get within the 50,000 limitation the call will produce an error.
+Aside from the output, the particular query used four parameters for its output: `year`, `short_desc`, `county_name`, and `state_name`. Each of these parameters have a particular set of values which can generate of query, which can be figured out using the `nass_param()` function. The `year` argument is the only argument that accepts either a character or numeric value, all other arguments only accept character vectors which can be multiple values in the case of `county_name` in the call above. The arguments for `usdarnass` are not case sensitive. Whether the county is called "Durham", "durham", "DURHAM", or "dUrHaM" the parameter will be ultimately passed to the API the same.
 
-There are 18 parameters for each query, although most of those will be `NULL` values and not required to specify an output.
+In querying the Quick Stats API, you usually do not need to subset many parameters to get to the 50,000 limitation but if you do not get within the 50,000 limitation the call will produce an error. As of right now, there are 18 parameters for each query, although most of those will be `NULL` values and not required to specify an output.
 
 ## Parameters
 
@@ -118,19 +118,19 @@ There are 18 parameters which can be included in each query to Quick Stats howev
 17. `freq_desc` "Period Type" - Length of time covered ("ANNUAL", "SEASON", "MONTHLY", "WEEKLY", "POINT IN TIME"). "MONTHLY" often covers more than one month. "POINT IN TIME" is as of a particular day.
 18. `reference_period_desc` "Period" - The specific time frame, within a freq_desc.
 
-The descriptions of parameters here are mostly thought of as minimal because much of the actual parameters have many values. This is where the `nass_param()` function comes into play in order to give the full set of values for each parameter.
+The descriptions of parameters here are minimal as most of the actual parameters have a vast amount of available options. This is where the `nass_param()` function comes into play in order to give the full set of values for each parameter.
 
 # Get Parameter
 
-The `nass_param()` function will return a vector of all the possible values for a parameter conditional on the other parameter subsets given above. By way of example, we can see that there are only two sources of datasets for the Quick Stats queries by asking what the values for the `source_desc` parameter are:
+The `nass_param()` function will return a vector of all the possible values for a parameter conditional on the other parameter subsets given above. We can see that there are only two sources of datasets for the Quick Stats queries by asking what the values for the `source_desc` parameter are:
 
 ```{r source}
 nass_param("source_desc")
 ```
 
-The first argument in `nass_param()` is the parameter of interest, which can take on any of the 18 values from the parameters section. This argument must be passed in a character format, so make sure to use quotations in your calls. The characters are also not case sensitive in the calls. The `year` parameter is the only parameter that does not need to be a character vector but can be numeric instead.
+The first argument in `nass_param()` is the parameter of interest, which can take on any of the 18 values from the parameters section. This argument must be passed in a character format, so make sure to use quotations in your calls. The characters are also not case sensitive in the calls.
 
-This function is most helpful in determining what variables are available for a certain subset. For example, if I were interested in what county level variables in Ohio are available in 2000 I might start by determining what "Group" is available at that level:
+This function is most helpful in determining what variables are available for a certain subset. For example, if I was interested in what county level variables in Ohio are available in 2000 I might start by determining what "Group" is available at that level:
 
 ```{r ohio_group}
 nass_param("group_desc",
@@ -139,7 +139,7 @@ nass_param("group_desc",
            year = 2000)
 ```
 
-Now, if I want to further figure out what commodities are available for the "DAIRY" subset of this data but only after 2000, I would make a call of :
+Now, if I want to further figure out what commodities are available for the "DAIRY" subset of this data but only after 2000, I would make a call of:
 
 ```{r ohio_commodity}
 nass_param("commodity_desc",
@@ -175,31 +175,36 @@ nass_data(commodity_desc = "AG LAND",
           agg_level_desc = "COUNTY")
 ```
 
-At this point in time a bit of understanding of the data and the user's goals are needed. If there is only one state of interest for the study, then subsetting the data further to a state is likely the best strategy. However, it is more likely that the user wants the all county level data related to agricultural land. My strategy would be to look at the number of observations for each year of interest I might have:
+At this point in time a bit of understanding of the data and the user's goals are needed. If there is only one state of interest for the study, then subsetting the data further to a state is likely the best strategy. However, it is more likely that the user wants the all county level data related to agricultural land. My strategy would be to look at the number of observations for each year of interest to my data request. I would then take a vector of potential values for years and iterate a call to `nass_count` over each year to determine the count of values for each year:
 
 ```{r count_agland_years}
-years <- 2000:2017
-sapply(years, function(x) nass_count(year = x,
-                                     commodity_desc = "AG LAND",
-                                     agg_level_desc = "COUNTY"))
+years        <- 2000:2017
+names(years) <- 2000:2017
+sapply(years,
+       function(x) nass_count(year = x,
+                              commodity_desc = "AG LAND",
+                              agg_level_desc = "COUNTY"), USE.NAMES = TRUE)
 
 ```
 
-The observations here are only related to 2002, 2007, and 2012 which are agricultural census years and it is highly likely that there are a lot of variables in the category what would likely not be useful. It is then best to look at the descriptions of the variables to figure out what data would be most useful:
+The observations here are only related to 2002, 2007, and 2012 which are agricultural census years and it is highly likely that there are a lot of variables in the category what would likely not be excessive information. It is then best to look at the descriptions of the variables to figure out what data would be most useful:
 
 ```{r agland_params}
 agland_params <- nass_param("short_desc",
                             commodity_desc = "AG LAND",
-                            agg_level_desc = "COUNTY")
-agland_params
+                            agg_level_desc = "COUNTY",
+                            year = c(2002, 2007, 2012))
+head(agland_params)
 ```
 
-We can use the output for the parameter values to see the number of observations within each of these categories:
+There are `r length(agland_params)` parameter values in that query, but only the first 6 are displayed to save space. We can use the output for the parameter values to see the number of observations within each of these categories:
 
 ```{r count_agland_short_desc}
-sapply(agland_params, function(x) nass_count(short_desc = x,
-                                             commodity_desc = "AG LAND",
-                                             agg_level_desc = "COUNTY"))
+sapply(head(agland_params),
+       function(x) nass_count(short_desc = x,
+                              commodity_desc = "AG LAND",
+                              agg_level_desc = "COUNTY",
+                              year = c(2002, 2007, 2012)))
 ```
 
 While most of these data items fit within the 50,000 limit, not all do. Take for example the "AG LAND - TREATED, MEASURED IN ACRES" category exceeds the limit and would not be able to be downloaded. This is because the treated category actually has multiple domains which can be seen by combining the `nass_param()` and `nass_count()`:
@@ -209,9 +214,21 @@ agland_domain <- nass_param("domain_desc",
                             short_desc = "AG LAND - TREATED, MEASURED IN ACRES",
                             commodity_desc = "AG LAND",
                             agg_level_desc = "COUNTY")
-sapply(agland_domain, function(x) nass_count(domain_desc = x,
-                                             short_desc = "AG LAND - TREATED, MEASURED IN ACRES",
-                                             commodity_desc = "AG LAND",
-                                             agg_level_desc = "COUNTY"))
+sapply(agland_domain,
+       function(x) nass_count(domain_desc = x,
+                              short_desc = "AG LAND - TREATED, MEASURED IN ACRES",
+                              commodity_desc = "AG LAND",
+                              agg_level_desc = "COUNTY"))
+```
+
+To download the above data, one would need to iterate over each of the `domain_desc` values in order to fit within the limits. The `lapply` method is likely the easiest way to accomplish this:
+
+```{r agland_domain_download}
+agland_domain_download <- lapply(agland_domain,
+                                 function(x) nass_data(domain_desc = x,
+                                                       short_desc = "AG LAND - TREATED, MEASURED IN ACRES",
+                                                       commodity_desc = "AG LAND",
+                                                       agg_level_desc = "COUNTY"))
+agland_domain_data <- do.call("rbind", agland_domain_download)
 ```
 

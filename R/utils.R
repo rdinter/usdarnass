@@ -41,12 +41,6 @@ args_list <- function(key = NULL,
                       format = NULL) {
   key <- check_key(key)
   
-  # Check to see if year used a logical operator
-  year  <- trimws(year)
-  punct <- grepl("[[:punct:]]", year)
-  if (length(punct) == 0) punct <- FALSE
-  punct_year <- as.numeric(gsub("[[:punct:]]", "", year))
-  
   arguments <- list(key = key,
                param = param,
                source_desc = source_desc,
@@ -77,29 +71,7 @@ args_list <- function(key = NULL,
     }
   
   # Conditional year values
-  if (!punct) {
-    arguments <- append(arguments, list(year = year))
-  } else if (punct) {
-    # __LE = <= 
-    # __LT = < 
-    # __GT = > 
-    # __GE = >= 
-    # __LIKE = like 
-    # __NOT_LIKE = not like 
-    # __NE = not equal 
-    if (grepl("^=<|^<=", year) | grepl("=>$|>=$", year)) {
-      arguments <- append(arguments, list(year__LE = punct_year))
-    }
-    if ((grepl("^<", year) | grepl(">$", year)) & !grepl("=", year)) {
-      arguments <- append(arguments, list(year__LT = punct_year))
-    }
-    if (grepl("^=>|^>=", year) | grepl("=<$|<=$", year)) {
-      arguments <- append(arguments, list(year__GE = punct_year))
-    }
-    if ((grepl("^>", year) | grepl("<$", year)) & !grepl("=", year)) {
-      arguments <- append(arguments, list(year__GT = punct_year))
-    }
-  }
+  arguments <- append(arguments, conditional_years(year))
   
   # Expand arguments if there is more than one parameter
   arg_stack <- suppressWarnings(utils::stack(arguments))
@@ -107,6 +79,38 @@ args_list <- function(key = NULL,
   
   return(arguments)
 }
+
+# Conditional year values
+conditional_years <- function(x) {
+  # Check to see if year used a logical operator
+  years <- trimws(x)
+  punct <- grepl("[[:punct:]]", years)
+  punct_years <- as.numeric(gsub("[[:punct:]]", "", years))
+  
+  # Conditional year values
+  # __LE = <= 
+  # __LT = < 
+  # __GT = > 
+  # __GE = >= 
+  # __LIKE = like 
+  # __NOT_LIKE = not like 
+  # __NE = not equal 
+  year     <- punct_years[!punct]
+  year__LE <- punct_years[(grepl("^=<|^<=", years) | grepl("=>$|>=$", years))]
+  year__LT <- punct_years[((grepl("^<", years) | grepl(">$", years)) &
+                             !grepl("=", years))]
+  year__GE <- punct_years[(grepl("^=>|^>=", years) | grepl("=<$|<=$", years))]
+  year__GT <- punct_years[((grepl("^>", years) | grepl("<$", years)) &
+                             !grepl("=", years))]
+  
+  results <- list(year = year,
+                  year__LE = year__LE,
+                  year__LT = year__LT,
+                  year__GE = year__GE,
+                  year__GT = year__GT)
+  return(results)
+}
+
 
 # Check if there is an API key available on the system
 check_key <- function(x){
