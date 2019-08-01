@@ -38,7 +38,8 @@ args_list <- function(key = NULL,
                       year = NULL,
                       freq_desc = NULL,
                       reference_period_desc = NULL,
-                      format = NULL) {
+                      format = NULL,
+                      ...) {
   key <- check_key(key)
   
   arguments <- list(key = key,

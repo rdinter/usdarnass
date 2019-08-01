@@ -23,7 +23,8 @@ Suggests:
     rmarkdown,
     tidyverse,
     dplyr,
-    tidyr
+    tidyr,
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr
 Authors@R: 
     c(person(given = "Robert",
@@ -35,3 +36,4 @@ Authors@R:
              family = "Eyer",
              role = "aut",
              email = "jeyer@usc.edu"))
+Date: 2019-06-30

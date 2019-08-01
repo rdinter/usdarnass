@@ -10,7 +10,7 @@ args_list(key = NULL, param = NULL, source_desc = NULL,
   agg_level_desc = NULL, statisticcat_desc = NULL, state_name = NULL,
   asd_desc = NULL, county_name = NULL, region_desc = NULL,
   zip_5 = NULL, watershed_desc = NULL, year = NULL,
-  freq_desc = NULL, reference_period_desc = NULL, format = NULL)
+  freq_desc = NULL, reference_period_desc = NULL, format = NULL, ...)
 }
 \arguments{
 \item{key}{API key, default is to use the value stored in \code{.Renviron}
