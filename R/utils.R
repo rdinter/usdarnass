@@ -7,6 +7,7 @@
 #' @param format Output format from API call. Defaults to CSV as it is typically
 #'   the smallest sized call. Other options are JSON and XML but these are not
 #'   recommended. XML currently not supported.
+#' @param \\dots Not used.
 #' @return A list containing arguments for Quick Stats API call
 #' @export args_list
 #' @examples
