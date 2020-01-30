@@ -4,13 +4,46 @@
 \alias{nass_param}
 \title{Get all possible values of a parameter}
 \usage{
-nass_param(param = NULL, source_desc = NULL, sector_desc = NULL,
-  group_desc = NULL, commodity_desc = NULL, short_desc = NULL,
-  domain_desc = NULL, domaincat_desc = NULL, agg_level_desc = NULL,
-  statisticcat_desc = NULL, state_name = NULL, asd_desc = NULL,
-  county_name = NULL, region_desc = NULL, zip_5 = NULL,
-  watershed_desc = NULL, year = NULL, freq_desc = NULL,
-  reference_period_desc = NULL, key = NULL)
+nass_param(
+  param = NULL,
+  source_desc = NULL,
+  sector_desc = NULL,
+  group_desc = NULL,
+  commodity_desc = NULL,
+  class_desc = NULL,
+  prodn_practice_desc = NULL,
+  util_practice_desc = NULL,
+  statisticcat_desc = NULL,
+  unit_desc = NULL,
+  short_desc = NULL,
+  domain_desc = NULL,
+  domaincat_desc = NULL,
+  agg_level_desc = NULL,
+  state_ansi = NULL,
+  state_fips_code = NULL,
+  state_alpha = NULL,
+  state_name = NULL,
+  asd_code = NULL,
+  asd_desc = NULL,
+  county_ansi = NULL,
+  county_code = NULL,
+  county_name = NULL,
+  region_desc = NULL,
+  zip_5 = NULL,
+  watershed_code = NULL,
+  watershed_desc = NULL,
+  congr_district_code = NULL,
+  country_code = NULL,
+  country_name = NULL,
+  location_desc = NULL,
+  year = NULL,
+  freq_desc = NULL,
+  begin_code = NULL,
+  end_code = NULL,
+  reference_period_desc = NULL,
+  week_ending = NULL,
+  key = NULL
+)
 }
 \arguments{
 \item{param}{A valid parameter value. Available names are: source_desc,
@@ -34,6 +67,21 @@ and "VEGETABLES").}
 \item{commodity_desc}{"Commodity" - The primary subject of interest (e.g.,
 "CORN", "CATTLE", "LABOR", "TRACTORS", "OPERATORS").}
 
+\item{class_desc}{Generally a physical attribute (e.g., variety, size, color,
+gender) of the commodity.}
+
+\item{prodn_practice_desc}{A method of production or action taken on the
+commodity (e.g., IRRIGATED, ORGANIC, ON FEED).}
+
+\item{util_practice_desc}{Utilizations (e.g., GRAIN, FROZEN, SLAUGHTER) or
+marketing channels (e.g., FRESH MARKET, PROCESSING, RETAIL).}
+
+\item{statisticcat_desc}{"Category" - The aspect of a commodity being
+measured (e.g., "AREA HARVESTED", "PRICE RECEIVED", "INVENTORY", "SALES").}
+
+\item{unit_desc}{The unit associated with the statistic category (e.g.,
+ACRES, $ / LB, HEAD, $, OPERATIONS).}
+
 \item{short_desc}{"Data Item" - A concatenation of six columns:
 commodity_desc, class_desc, prodn_practice_desc, util_practice_desc,
 statisticcat_desc, and unit_desc.}
@@ -54,12 +102,25 @@ granularity of the data. ("AGRICULTURAL DISTRICT", "COUNTY",
 "INTERNATIONAL", "NATIONAL", "REGION : MULTI-STATE", "REGION : SUB-STATE",
 "STATE", "WATERSHED", or "ZIP CODE")}
 
-\item{statisticcat_desc}{"Category" - The aspect of a commodity being
-measured (e.g., "AREA HARVESTED", "PRICE RECEIVED", "INVENTORY", "SALES").}
+\item{state_ansi}{American National Standards Institute (ANSI) standard
+2-digit state codes.}
+
+\item{state_fips_code}{NASS 2-digit state codes; include 99 and 98 for US
+TOTAL and OTHER STATES, respectively; otherwise match ANSI codes.}
+
+\item{state_alpha}{State abbreviation, 2-character alpha code.}
 
 \item{state_name}{"State" - State full name.}
 
+\item{asd_code}{NASS defined county groups, unique within a state, 2-digit ag
+statistics district code.}
+
 \item{asd_desc}{"Ag District" - Ag statistics district name.}
+
+\item{county_ansi}{ANSI standard 3-digit county codes.}
+
+\item{county_code}{NASS 3-digit county codes; includes 998 for OTHER
+(COMBINED) COUNTIES and Alaska county codes; otherwise match ANSI codes.}
 
 \item{county_name}{"County" - County name.}
 
@@ -70,7 +131,19 @@ to a commodity.}
 
 \item{zip_5}{"Zip Code" - US Postal Service 5-digit zip code.}
 
+\item{watershed_code}{US Geological Survey (USGS) 8-digit Hydrologic Unit
+Code (HUC) for watersheds.}
+
 \item{watershed_desc}{"Watershed" - Name assigned to the HUC.}
+
+\item{congr_district_code}{US Congressional District 2-digit code.}
+
+\item{country_code}{US Census Bureau, Foreign Trade Division 4-digit country
+code, as of April, 2007.}
+
+\item{country_name}{Country name.}
+
+\item{location_desc}{Full description for the location dimension.}
 
 \item{year}{"Year" - The numeric year of the data and can be either a
 character or numeric vector. Conditional values are also possible, for
@@ -83,8 +156,18 @@ end of a string with the year.}
 "MONTHLY", "WEEKLY", "POINT IN TIME"). "MONTHLY" often covers more than one
 month. "POINT IN TIME" is as of a particular day.}
 
+\item{begin_code}{If applicable, a 2-digit code corresponding to the
+beginning of the reference period (e.g., for freq_desc = MONTHLY,
+begin_code ranges from 01 (January) to 12 (December)).}
+
+\item{end_code}{If applicable, a 2-digit code corresponding to the end of the
+reference period (e.g., the reference period of JAN THRU MAR will have
+begin_code = 01 and end_code = 03).}
+
 \item{reference_period_desc}{"Period" - The specific time frame, within a
 freq_desc.}
+
+\item{week_ending}{Week ending date, used when freq_desc = WEEKLY.}
 
 \item{key}{API key, default is to use the value stored in \code{.Renviron}
 which is stored from the \code{\link{nass_set_key}} function. If there is

@@ -8,10 +8,12 @@
 
 <title>Combine API arguments for query — args_list • usdarnass</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,12 +32,13 @@
 
 
 
-<meta property="og:title" content="Combine API arguments for query — args_list" />
 
+<meta property="og:title" content="Combine API arguments for query — args_list" />
 <meta property="og:description" content="Take a character vector for each argument and concatenate them
   for API calls to Quick Stats. Arguments can be single objects or a vector
   and are not case sensitive." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -109,7 +112,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rdinter/usdarnass">
@@ -135,11 +137,9 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Take a character vector for each argument and concatenate them
   for API calls to Quick Stats. Arguments can be single objects or a vector
   and are not case sensitive.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>args_list</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>param</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>source_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -148,9 +148,8 @@
   <span class='kw'>agg_level_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>statisticcat_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>state_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>asd_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>county_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>region_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>zip_5</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>watershed_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>freq_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reference_period_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>numeric_vals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+  <span class='kw'>freq_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reference_period_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -277,12 +276,15 @@ freq_desc.</p></td>
 the smallest sized call. Other options are JSON and XML but these are not
 recommended. XML currently not supported.</p></td>
     </tr>
+    <tr>
+      <th>\dots</th>
+      <td><p>Not used.</p></td>
+    </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list containing arguments for Quick Stats API call</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -297,9 +299,7 @@ recommended. XML currently not supported.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

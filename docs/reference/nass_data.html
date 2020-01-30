@@ -8,10 +8,12 @@
 
 <title>Get data from the Quick Stats query — nass_data • usdarnass</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,12 +32,13 @@
 
 
 
-<meta property="og:title" content="Get data from the Quick Stats query — nass_data" />
 
+<meta property="og:title" content="Get data from the Quick Stats query — nass_data" />
 <meta property="og:description" content="Sends query to Quick Stats API from given parameter values. Data
   request is limited to 50,000 records per the API. Use
   nass_count to determine number of records in query." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -109,7 +112,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rdinter/usdarnass">
@@ -135,11 +137,9 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Sends query to Quick Stats API from given parameter values. Data
   request is limited to 50,000 records per the API. Use
   <code><a href='nass_count.html'>nass_count</a></code> to determine number of records in query.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>nass_data</span>(<span class='kw'>source_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sector_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>group_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -150,7 +150,7 @@
   <span class='kw'>watershed_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>freq_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>reference_period_desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CSV"</span>, <span class='st'>"JSON"</span>,
   <span class='st'>"XML"</span>), <span class='kw'>numeric_vals</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -277,11 +277,10 @@ Default is to FALSE as some Values have a suppression code. Converting to
 numeric will result in suppressed values to be NA.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame containing query to API.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -300,9 +299,7 @@ numeric will result in suppressed values to be NA.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

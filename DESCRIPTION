@@ -17,11 +17,10 @@ Imports: httr,
     utils,
     readr,
     stats
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Suggests: 
     knitr,
     rmarkdown,
-    tidyverse,
     dplyr,
     tidyr,
     testthat (>= 2.1.0)
