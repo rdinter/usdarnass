@@ -1,5 +1,5 @@
 skip_on_cran()
-
+skip_on_travis()
 # ---- returns the correct type of value ----------------------------------
 
 test_that("nass_count returns how many", {
