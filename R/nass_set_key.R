@@ -36,7 +36,7 @@
 nass_set_key <- function(key = NULL, overwrite = FALSE) {
   key_env <- Sys.getenv("NASS_KEY")
   
-  if (isFALSE(overwrite)) {
+  if (!isTRUE(overwrite)) {
     
     if (is.null(key)) {
       if (key_env == "") {
